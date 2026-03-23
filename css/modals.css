@@ -26,8 +26,9 @@
 
 /* ── TABS ── */
 .tabs { display: flex; background: var(--c); border-radius: 14px; padding: 4px; gap: 4px; margin-bottom: 18px; }
-.tab  { flex: 1; padding: 10px; text-align: center; border: none; border-radius: 10px; background: none; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; color: var(--tm); transition: all .2s; }
+.tab  { flex: 1; padding: 10px; text-align: center; border: none; border-radius: 10px; background: none; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; color: var(--tm); transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .tab.on { background: var(--w); color: var(--tx); box-shadow: 0 1px 6px rgba(0,0,0,.08); }
+.tab-ico { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
 /* ── FORMULAIRES ── */
 .fg { margin-bottom: 14px; }
