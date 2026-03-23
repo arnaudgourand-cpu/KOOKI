@@ -71,7 +71,7 @@ function renderRecipes() {
     h += `<div class="rcard" onclick="showDet(${idx})">
       ${hasPhoto
         ? `<img class="rcard-photo" src="${r.photo}" alt="${r.name}">`
-        : `<div class="rcard-emoji">${r.emoji || CATE[r.category] || '🍽️'}</div>`}
+        : `<div class="rcard-emoji"></div>`}
       <div class="rcard-grad"></div>
       <span class="rcard-cat">${CATS[r.category]||'Plat'}</span>
       <div class="rcard-body">
@@ -150,7 +150,7 @@ function clearPhoto() {
 /* ══════════ AJOUT / ÉDITION ══════════ */
 function openAdd() {
   editIdx = null;
-  ['rn','re','rt','rs','ri','rurl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['rn','rt','rs','ri','rurl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('inglist').innerHTML = '';
   document.getElementById('spin').classList.remove('on');
   document.getElementById('uprev').style.display = 'none';
@@ -164,7 +164,6 @@ function openEdit(i) {
   editIdx = i;
   const r = R[i];
   document.getElementById('rn').value = r.name || '';
-  document.getElementById('re').value = r.emoji || '';
   document.getElementById('rt').value = r.time || '';
   document.getElementById('rs').value = r.servings || '';
   document.getElementById('rc').value = r.category || 'plat';
@@ -213,7 +212,7 @@ function saveRecipe() {
   const recette = {
     name,
     photo:        photoData || null,
-    emoji:        document.getElementById('re').value || '',
+    emoji:        '',
     time:         document.getElementById('rt').value,
     servings:     document.getElementById('rs').value,
     category:     document.getElementById('rc').value,
