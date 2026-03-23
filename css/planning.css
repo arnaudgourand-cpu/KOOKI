@@ -17,9 +17,10 @@
 .cdh { text-align: center; font-size: 10px; font-weight: 800; color: var(--tl); text-transform: uppercase; letter-spacing: .5px; padding: 6px 0 8px; }
 
 .cday {
-  background: var(--w); border-radius: 12px; min-height: 72px;
+  background: var(--w); border-radius: 12px; min-height: 72px; max-height: 110px;
   padding: 6px 5px; border: 2px solid transparent;
   cursor: pointer; transition: border-color .15s; display: flex; flex-direction: column;
+  overflow: hidden;
 }
 .cday:hover { border-color: var(--rm); }
 .cday.off { background: transparent; border: none; cursor: default; pointer-events: none; }
