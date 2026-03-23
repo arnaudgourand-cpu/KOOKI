@@ -26,3 +26,23 @@
 
 .sname { flex: 1; font-size: 13px; font-weight: 700; }
 .sqty  { font-size: 11px; color: var(--tl); font-weight: 800; }
+
+/* ── IMPRESSION ── */
+.print-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: 999px; border: 2px solid var(--bd);
+  background: var(--w); font-family: 'Nunito', sans-serif; font-size: 13px;
+  font-weight: 800; color: var(--tm); cursor: pointer; transition: all .2s;
+}
+.print-btn:hover { border-color: var(--r); color: var(--r); }
+.print-btn svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+@media print {
+  .topbar, .bnav, .shop-top, .schk { display: none !important; }
+  body { background: white; padding: 0; }
+  .pg { display: block !important; padding: 20px; }
+  #pg-recipes, #pg-planning { display: none !important; }
+  .ssections { grid-template-columns: repeat(2, 1fr); }
+  .ssec { box-shadow: none; border: 1px solid #ddd; }
+  .sitem.done { display: none; }
+}
