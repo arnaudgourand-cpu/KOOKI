@@ -1,0 +1,110 @@
+/* ── VARIABLES ── */
+:root {
+  --c:   #FAF3EA;
+  --c2:  #EEE4D4;
+  --r:   #E5431A;
+  --rl:  #FDF0EB;
+  --rm:  #F6C9BB;
+  --g:   #2EAA6A;
+  --gl:  #E6F7EE;
+  --tx:  #1A1A1A;
+  --tm:  #6B6B6B;
+  --tl:  #B0B0B0;
+  --w:   #FFFFFF;
+  --bd:  #E8DDD0;
+  --nh:  72px;
+  --th:  58px;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--c);
+  color: var(--tx);
+  min-height: 100vh;
+  padding-bottom: var(--nh);
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  height: var(--th);
+  background: var(--w);
+  border-bottom: 1.5px solid var(--bd);
+  display: flex; align-items: center; justify-content: center;
+}
+.logo { font-size: 30px; font-weight: 900; font-style: italic; color: var(--r); letter-spacing: -1px; line-height: 1; user-select: none; }
+.logo b { color: var(--tx); font-style: normal; font-weight: 900; }
+
+/* ── BOTTOM NAV ── */
+.bnav {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+  height: var(--nh);
+  background: var(--w);
+  border-top: 1.5px solid var(--bd);
+  display: flex; align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.ni {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 5px; border: none; background: none; cursor: pointer;
+  color: var(--tl); transition: color .2s; padding: 8px 0;
+}
+.ni.on { color: var(--r); }
+.ni svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ni span { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; font-family: 'Nunito', sans-serif; }
+
+/* ── PAGES ── */
+.pg { display: none; padding: 20px 16px; max-width: 900px; margin: 0 auto; animation: fadeIn .25s ease; }
+.pg.on { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ── BOUTONS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 12px 22px; border-radius: 999px; border: none;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800;
+  cursor: pointer; transition: all .2s; line-height: 1; white-space: nowrap;
+}
+.btn-r { background: var(--r); color: #fff; }
+.btn-r:hover { background: #c83310; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(229,67,26,.3); }
+.btn-w { background: var(--w); color: var(--tx); border: 2px solid var(--bd); }
+.btn-w:hover { border-color: var(--r); color: var(--r); }
+.btn-q { background: none; color: var(--tm); padding: 9px 14px; border: none; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; border-radius: 999px; }
+.btn-q:hover { background: var(--c2); }
+.btn-full { width: 100%; }
+.btn-sm { padding: 9px 16px; font-size: 13px; }
+
+/* ── TAGS ── */
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.tag { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+.tag-r { background: var(--rl); color: var(--r); }
+.tag-g { background: var(--gl); color: var(--g); }
+.tag-n { background: var(--c2); color: var(--tm); }
+
+/* ── EMPTY STATE ── */
+.empty { text-align: center; padding: 48px 20px; }
+.empty-ico { font-size: 56px; margin-bottom: 14px; display: block; }
+.empty h3 { font-size: 17px; font-weight: 900; color: var(--tm); margin-bottom: 6px; }
+.empty p  { font-size: 13px; color: var(--tl); font-weight: 700; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: calc(var(--nh) + 10px); left: 50%;
+  transform: translateX(-50%) translateY(50px);
+  background: var(--tx); color: #fff; padding: 10px 20px;
+  border-radius: 999px; font-size: 13px; font-weight: 800;
+  z-index: 999; transition: transform .25s ease; white-space: nowrap; pointer-events: none;
+}
+.toast.on { transform: translateX(-50%) translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 420px) {
+  .r3 { grid-template-columns: 1fr 1fr; }
+  .cgrid { gap: 3px; }
+}
