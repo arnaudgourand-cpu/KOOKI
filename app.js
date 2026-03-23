@@ -299,13 +299,29 @@ function changeMonth(d) {
 function openPlanOv(key, day) {
   pkey = key;
   document.getElementById('plantitle').textContent = `${day} ${MONTHS[cM]}`;
-  document.getElementById('picklist').innerHTML = !R.length
-    ? `<div class="empty"><span class="empty-ico">🍳</span><h3>Aucune recette</h3><p>Ajoutez d'abord des recettes.</p></div>`
-    : R.map((r,i) => `<div class="pickitem" onclick="addMeal(${i})">
-        <span class="ico">${r.emoji||'🍽️'}</span>
-        <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
-      </div>`).join('');
+  renderPicklist('');
   openOv('ov-plan');
+}
+
+function renderPicklist(q) {
+  const filtered = R.filter(r => !q || r.name.toLowerCase().includes(q.toLowerCase()));
+  if (!R.length) {
+    document.getElementById('picklist').innerHTML = `<div class="empty"><span class="empty-ico">🍳</span><h3>Aucune recette</h3><p>Ajoutez d'abord des recettes.</p></div>`;
+    return;
+  }
+  let h = filtered.length === 0
+    ? `<div class="empty"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3></div>`
+    : filtered.map(r => {
+        const i = R.indexOf(r);
+        return `<div class="pickitem" onclick="addMeal(${i})">
+          ${r.photo
+            ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">`
+            : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px">${r.emoji||'🍽️'}</div>`
+          }
+          <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
+        </div>`;
+      }).join('');
+  document.getElementById('picklist').innerHTML = h;
 }
 
 function addMeal(ri) {
