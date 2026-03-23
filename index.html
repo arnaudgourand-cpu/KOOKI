@@ -23,6 +23,14 @@
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input id="searchInput" type="text" placeholder="Cherche une recette…" oninput="renderRecipes()">
   </div>
+  <div class="cat-filters" id="cat-filters">
+    <button class="cat-btn on" onclick="setFilter('all',this)">Tout</button>
+    <button class="cat-btn" onclick="setFilter('plat',this)">Plat</button>
+    <button class="cat-btn" onclick="setFilter('entree',this)">Entrée</button>
+    <button class="cat-btn" onclick="setFilter('dessert',this)">Dessert</button>
+    <button class="cat-btn" onclick="setFilter('pdej',this)">Petit-déj</button>
+    <button class="cat-btn" onclick="setFilter('snack',this)">Snack</button>
+  </div>
   <div class="rtopbar">
     <span id="rcount">0 recette</span>
     <button class="btn btn-r btn-sm" onclick="openAdd()">+ Ajouter</button>
