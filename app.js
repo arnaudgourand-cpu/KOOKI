@@ -51,16 +51,28 @@ function openOv(id)  { document.getElementById(id).classList.add('on'); }
 function closeOv(id) { document.getElementById(id).classList.remove('on'); }
 document.querySelectorAll('.ov').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('on'); }));
 
+let activeFilter = 'all';
+
+function setFilter(cat, btn) {
+  activeFilter = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRecipes();
+}
+
 /* ══════════ RECETTES ══════════ */
 function renderRecipes() {
   const q = (document.getElementById('searchInput')?.value||'').toLowerCase().trim();
-  const filtered = R.filter(r => !q || r.name.toLowerCase().includes(q));
+  const filtered = R.filter(r =>
+    (!q || r.name.toLowerCase().includes(q)) &&
+    (activeFilter === 'all' || r.category === activeFilter)
+  );
   const n = R.length;
-  document.getElementById('rcount').textContent = q
+  document.getElementById('rcount').textContent = q || activeFilter !== 'all'
     ? `${filtered.length} résultat${filtered.length>1?'s':''}`
     : `${n} recette${n>1?'s':''}`;
 
-  let h = !q ? `<div class="add-card" onclick="openAdd()">
+  let h = (!q && activeFilter === 'all') ? `<div class="add-card" onclick="openAdd()">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
     <span>Ajouter une recette</span>
   </div>` : '';
@@ -85,7 +97,7 @@ function renderRecipes() {
     </div>`;
   });
 
-  if (q && !filtered.length) h = `<div class="empty" style="grid-column:1/-1"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3><p>Essayez un autre mot-clé</p></div>`;
+  if (!filtered.length) h += `<div class="empty" style="grid-column:1/-1"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3><p>Essayez un autre filtre</p></div>`;
   document.getElementById('rgrid').innerHTML = h;
 }
 
