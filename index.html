@@ -31,6 +31,11 @@
     <button class="cat-btn" onclick="setFilter('pdej',this)">Petit-déj</button>
     <button class="cat-btn" onclick="setFilter('snack',this)">Snack</button>
   </div>
+  <div class="cat-filters" id="regime-filters">
+    <button class="cat-btn on" onclick="setRegime('all',this)">Tous les régimes</button>
+    <button class="cat-btn" onclick="setRegime('normal',this)">Normal</button>
+    <button class="cat-btn" onclick="setRegime('vege',this)">Végétarien</button>
+  </div>
   <div class="rtopbar">
     <span id="rcount">0 recette</span>
     <button class="btn btn-r btn-sm" onclick="openAdd()">+ Ajouter</button>
@@ -126,6 +131,12 @@
             <option value="snack">Snack</option>
           </select>
         </div>
+      </div>
+      <div class="fg"><label>Régime</label>
+        <select id="rg">
+          <option value="normal">Normal</option>
+          <option value="vege">Végétarien</option>
+        </select>
       </div>
       <div class="fg">
         <label>Ingrédients</label>
