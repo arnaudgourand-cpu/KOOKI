@@ -52,10 +52,18 @@ function closeOv(id) { document.getElementById(id).classList.remove('on'); }
 document.querySelectorAll('.ov').forEach(o => o.addEventListener('click', e => { if(e.target===o) o.classList.remove('on'); }));
 
 let activeFilter = 'all';
+let activeRegime = 'all';
 
 function setFilter(cat, btn) {
   activeFilter = cat;
-  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('#cat-filters .cat-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRecipes();
+}
+
+function setRegime(regime, btn) {
+  activeRegime = regime;
+  document.querySelectorAll('#regime-filters .cat-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   renderRecipes();
 }
@@ -65,10 +73,11 @@ function renderRecipes() {
   const q = (document.getElementById('searchInput')?.value||'').toLowerCase().trim();
   const filtered = R.filter(r =>
     (!q || r.name.toLowerCase().includes(q)) &&
-    (activeFilter === 'all' || r.category === activeFilter)
+    (activeFilter === 'all' || r.category === activeFilter) &&
+    (activeRegime === 'all' || r.regime === activeRegime)
   );
   const n = R.length;
-  document.getElementById('rcount').textContent = q || activeFilter !== 'all'
+  document.getElementById('rcount').textContent = q || activeFilter !== 'all' || activeRegime !== 'all'
     ? `${filtered.length} résultat${filtered.length>1?'s':''}`
     : `${n} recette${n>1?'s':''}`;
 
@@ -163,6 +172,7 @@ function clearPhoto() {
 function openAdd() {
   editIdx = null;
   ['rn','rt','rs','ri','rurl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('rg').value = 'normal';
   document.getElementById('inglist').innerHTML = '';
   document.getElementById('spin').classList.remove('on');
   document.getElementById('uprev').style.display = 'none';
@@ -179,6 +189,7 @@ function openEdit(i) {
   document.getElementById('rt').value = r.time || '';
   document.getElementById('rs').value = r.servings || '';
   document.getElementById('rc').value = r.category || 'plat';
+  document.getElementById('rg').value = r.regime || 'normal';
   document.getElementById('ri').value = r.instructions || '';
   photoData = r.photo || null;
   if (photoData) {
@@ -224,7 +235,7 @@ function saveRecipe() {
   const recette = {
     name,
     photo:        photoData || null,
-    emoji:        '',
+    regime:       document.getElementById('rg').value || 'normal',
     time:         document.getElementById('rt').value,
     servings:     document.getElementById('rs').value,
     category:     document.getElementById('rc').value,
