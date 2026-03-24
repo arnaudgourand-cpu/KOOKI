@@ -260,13 +260,8 @@ async function importUrl() {
   document.getElementById('uprev').style.display = 'none';
   try {
     const res = await fetch('https://kooki-api.arnaud-gourand.workers.dev/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1200,
-        messages: [{ role: 'user', content: `Extrais les informations de cette recette depuis l'URL : ${url}\n\nRéponds UNIQUEMENT en JSON valide (sans markdown, sans backticks) avec ce format exact :\n{"name":"...","emoji":"🍽️","time":30,"servings":4,"category":"plat","ingredients":[{"qty":"200","unit":"g","name":"farine"}],"instructions":"..."}\n\nSi tu ne peux pas accéder à l'URL, génère une recette cohérente avec le nom visible dans l'URL.\nCatégorie parmi : plat, entree, dessert, pdej, snack.` }]
-      })
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ url })
     });
     const data = await res.json();
     console.log('Worker response:', JSON.stringify(data));
