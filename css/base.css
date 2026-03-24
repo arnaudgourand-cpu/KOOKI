@@ -95,13 +95,26 @@ body {
 
 /* ── TOAST ── */
 .toast {
-  position: fixed; bottom: calc(var(--nh) + 10px); left: 50%;
-  transform: translateX(-50%) translateY(50px);
-  background: var(--tx); color: #fff; padding: 10px 20px;
-  border-radius: 999px; font-size: 13px; font-weight: 800;
-  z-index: 999; transition: transform .25s ease; white-space: nowrap; pointer-events: none;
+  position: fixed;
+  bottom: calc(var(--nh) + 16px);
+  left: 50%;
+  transform: translateX(-50%) translateY(0px);
+  background: var(--r);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--pill);
+  font-size: 14px;
+  font-weight: 800;
+  z-index: 999;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .25s ease, transform .25s ease;
 }
-.toast.on { transform: translateX(-50%) translateY(0); }
+.toast.on {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 420px) {
