@@ -129,12 +129,89 @@ function showDet(i) {
       <div style="font-size:13px;font-weight:700;color:var(--tm);line-height:1.7">${r.instructions.replace(/\n/g,'<br>')}</div>`;
   }
   if (r.url) h += `<div style="margin-top:12px"><a href="${r.url}" target="_blank" class="btn btn-w btn-sm">🔗 Source</a></div>`;
-  h += `<button class="btn btn-r btn-full" style="margin-top:16px" onclick="closeOv('ov-det');openEdit(${i})">✏️ Modifier</button>`;
+  h += `<div style="display:flex;gap:8px;margin-top:16px">
+    <button class="btn btn-r btn-full" onclick="closeOv('ov-det');openFiche(${i})">Voir la fiche complète</button>
+    <button class="btn btn-w" onclick="closeOv('ov-det');openEdit(${i})" style="flex-shrink:0">✏️</button>
+  </div>`;
   document.getElementById('detbody').innerHTML = h;
   openOv('ov-det');
 }
 
-function delR(i) {
+/* ══════════ FICHE RECETTE ══════════ */
+function openFiche(i) {
+  const r = R[i];
+  const steps = r.instructions
+    ? r.instructions.split('\n').filter(s => s.trim())
+    : [];
+
+  let h = `
+    <!-- HERO PHOTO -->
+    <div class="fiche-hero">
+      ${r.photo
+        ? `<img src="${r.photo}" class="fiche-photo">`
+        : `<div class="fiche-nophoto"></div>`}
+      <div class="fiche-hero-overlay">
+        <button class="fiche-back" onclick="showPg('recipes', document.getElementById('ni-recipes'))">
+          <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="fiche-edit" onclick="openEdit(${i})">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENU -->
+    <div class="fiche-body">
+      <div class="fiche-title">${r.name}</div>
+
+      <!-- BADGES -->
+      <div class="fiche-badges">
+        <span class="fiche-badge">${CATS[r.category]||'Plat'}</span>
+        ${r.regime === 'vege' ? `<span class="fiche-badge fiche-badge-g">Végétarien</span>` : ''}
+        ${r.time ? `<span class="fiche-badge fiche-badge-n">⏱ ${r.time} min</span>` : ''}
+        ${r.servings ? `<span class="fiche-badge fiche-badge-n">${r.servings} pers.</span>` : ''}
+      </div>
+
+      <!-- INGRÉDIENTS -->
+      ${r.ingredients?.length ? `
+      <div class="fiche-section">
+        <div class="fiche-section-title">Ingrédients</div>
+        <div class="fiche-ings">
+          ${r.ingredients.map(g => `
+            <div class="fiche-ing">
+              <span class="fiche-ing-name">${g.name}</span>
+              <span class="fiche-ing-qty">${[g.qty, g.unit].filter(Boolean).join(' ')}</span>
+            </div>`).join('')}
+        </div>
+      </div>` : ''}
+
+      <!-- INSTRUCTIONS -->
+      ${steps.length ? `
+      <div class="fiche-section">
+        <div class="fiche-section-title">Préparation</div>
+        <div class="fiche-steps">
+          ${steps.map((step, si) => `
+            <div class="fiche-step">
+              <div class="fiche-step-num">${si + 1}</div>
+              <div class="fiche-step-text">${step}</div>
+            </div>`).join('')}
+        </div>
+      </div>` : ''}
+
+      <!-- BOUTON PLANNING -->
+      <button class="btn btn-r btn-full" style="margin-top:8px" onclick="showPg('planning', document.getElementById('ni-planning'))">+ Ajouter au planning</button>
+
+      ${r.url ? `<div style="margin-top:12px"><a href="${r.url}" target="_blank" class="btn btn-w btn-full">Voir la recette originale</a></div>` : ''}
+    </div>
+  `;
+
+  document.getElementById('fiche-content').innerHTML = h;
+
+  // Afficher la page fiche sans activer un bouton nav
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById('pg-fiche').classList.add('on');
+  window.scrollTo(0, 0);
+}
   if (!confirm('Supprimer cette recette ?')) return;
   R.splice(i,1); sv(); renderRecipes(); toast('Recette supprimée');
 }
