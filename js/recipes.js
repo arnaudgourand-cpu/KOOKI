@@ -87,7 +87,8 @@ function showDet(i) {
 function openFiche(i) {
   const r = R[i];
   const steps = r.instructions ? r.instructions.split('\n').filter(s => s.trim()) : [];
-  let h = `
+
+  const h = `
     <div class="fiche-hero">
       ${r.photo ? `<img src="${r.photo}" class="fiche-photo">` : `<div class="fiche-nophoto"></div>`}
       <div class="fiche-hero-overlay">
@@ -107,31 +108,61 @@ function openFiche(i) {
         ${r.time?`<span class="fiche-badge fiche-badge-n">⏱ ${r.time} min</span>`:''}
         ${r.servings?`<span class="fiche-badge fiche-badge-n">${r.servings} pers.</span>`:''}
       </div>
-      ${r.ingredients?.length ? `<div class="fiche-section">
-        <div class="fiche-section-title">Ingrédients</div>
-        <div class="fiche-ings">${r.ingredients.map(g=>`
-          <div class="fiche-ing">
-            <span class="fiche-ing-name">${g.name}</span>
-            <span class="fiche-ing-qty">${[g.qty,g.unit].filter(Boolean).join(' ')}</span>
-          </div>`).join('')}
-        </div>
-      </div>` : ''}
-      ${steps.length ? `<div class="fiche-section">
-        <div class="fiche-section-title">Préparation</div>
-        <div class="fiche-steps">${steps.map((s,si)=>`
-          <div class="fiche-step">
-            <div class="fiche-step-num">${si+1}</div>
-            <div class="fiche-step-text">${s}</div>
-          </div>`).join('')}
-        </div>
-      </div>` : ''}
-      <button class="btn btn-r btn-full" style="margin-top:8px" onclick="showPg('planning', document.getElementById('ni-planning'))">+ Ajouter au planning</button>
-      ${r.url?`<div style="margin-top:12px"><a href="${r.url}" target="_blank" class="btn btn-w btn-full">Voir la recette originale</a></div>`:''}
+
+      <!-- ONGLETS -->
+      <div class="fiche-tabs">
+        <button class="fiche-tab on" onclick="ficheTab('ings', this)">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 6v6l4 2"/></svg>
+          Ingrédients
+        </button>
+        <button class="fiche-tab" onclick="ficheTab('steps', this)">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          Instructions
+        </button>
+      </div>
+
+      <!-- PANEL INGRÉDIENTS -->
+      <div class="fiche-panel on" id="fp-ings">
+        ${r.ingredients?.length
+          ? r.ingredients.map(g => `
+            <div class="fiche-ing">
+              <div class="fiche-ing-dot"></div>
+              <span class="fiche-ing-name">${g.name}</span>
+              <span class="fiche-ing-qty">${[g.qty,g.unit].filter(Boolean).join(' ')}</span>
+            </div>`).join('')
+          : `<p style="color:var(--tl);font-weight:700;padding:20px 0">Aucun ingrédient renseigné.</p>`}
+      </div>
+
+      <!-- PANEL INSTRUCTIONS -->
+      <div class="fiche-panel" id="fp-steps">
+        ${steps.length
+          ? `<div class="fiche-steps">${steps.map((s,si) => `
+            <div class="fiche-step">
+              <div class="fiche-step-num">${si+1}</div>
+              <div class="fiche-step-text">${s}</div>
+            </div>`).join('')}
+          </div>`
+          : `<p style="color:var(--tl);font-weight:700;padding:20px 0">Aucune instruction renseignée.</p>`}
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="fiche-actions">
+        <button class="btn btn-r btn-full" onclick="showPg('planning', document.getElementById('ni-planning'))">+ Ajouter au planning</button>
+        ${r.url?`<a href="${r.url}" target="_blank" class="btn btn-w btn-full">Voir la recette originale</a>`:''}
+      </div>
     </div>`;
+
   document.getElementById('fiche-content').innerHTML = h;
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
   document.getElementById('pg-fiche').classList.add('on');
   window.scrollTo(0, 0);
+}
+
+function ficheTab(panel, btn) {
+  document.querySelectorAll('.fiche-tab').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.fiche-panel').forEach(p => p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('fp-' + panel).classList.add('on');
 }
 
 /* ══ SUPPRESSION / NAVIGATION ══ */
