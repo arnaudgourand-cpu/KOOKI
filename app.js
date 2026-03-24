@@ -249,7 +249,7 @@ function saveRecipe() {
   document.querySelector('#ov-add .shd h3').textContent = 'Nouvelle recette';
   document.querySelector('#ov-add #t-manual .btn-r').textContent = 'Enregistrer la recette';
   sv(); closeOv('ov-add'); renderRecipes();
-  toast(isEdit ? '✅ Recette modifiée !' : '✅ Recette ajoutée !');
+  toast(isEdit ? 'Recette modifiée !' : 'Recette ajoutée !');
 }
 
 /* ══════════ IMPORT URL ══════════ */
@@ -286,7 +286,7 @@ async function importUrl() {
 function confirmUrl() {
   if (!urldat) return;
   R.push(urldat); sv(); closeOv('ov-add'); renderRecipes();
-  toast('✅ Recette importée !');
+  toast('Recette importée !');
 }
 
 /* ══════════ PLANNING SEMAINE ══════════ */
@@ -378,7 +378,7 @@ function addMeal(ri) {
   if (!P[pkey]) P[pkey] = [];
   P[pkey].push({ name:R[ri].name, emoji:R[ri].emoji, recipeIdx:ri });
   sv(); closeOv('ov-plan'); renderCal();
-  toast('📅 Repas planifié !');
+  toast('Repas planifié !');
 }
 
 function rmMeal(key, idx) {
