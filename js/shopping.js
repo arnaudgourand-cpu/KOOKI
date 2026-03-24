@@ -72,3 +72,66 @@ function uncheckAll() {
   Object.keys(CK).forEach(k => { if (k.startsWith(p)) delete CK[k]; });
   sv(); renderShop();
 }
+
+/* ══ FRIGO ══ */
+let frigoIngs = JSON.parse(localStorage.getItem('kk-frigo') || '[]');
+
+function saveFrigo() { localStorage.setItem('kk-frigo', JSON.stringify(frigoIngs)); }
+
+function addFrigoIng() {
+  const input = document.getElementById('frigo-input');
+  const val = input.value.trim().toLowerCase();
+  if (!val || frigoIngs.includes(val)) { input.value = ''; return; }
+  frigoIngs.push(val);
+  saveFrigo(); input.value = '';
+  renderFrigo();
+}
+
+function removeFrigoIng(i) {
+  frigoIngs.splice(i, 1);
+  saveFrigo(); renderFrigo();
+}
+
+function renderFrigo() {
+  // Tags
+  const tagsEl = document.getElementById('frigo-tags');
+  tagsEl.innerHTML = frigoIngs.map((ing, i) => `
+    <div class="frigo-tag">
+      ${ing}
+      <button onclick="removeFrigoIng(${i})">×</button>
+    </div>`).join('');
+
+  const resEl = document.getElementById('frigo-results');
+  if (!frigoIngs.length) { resEl.innerHTML = ''; return; }
+
+  // Trouver les recettes qui matchent
+  const scored = R.map((r, idx) => {
+    if (!r.ingredients?.length) return null;
+    const rIngs = r.ingredients.map(g => g.name.toLowerCase());
+    const matched = frigoIngs.filter(f => rIngs.some(ri => ri.includes(f) || f.includes(ri)));
+    const missing = rIngs.filter(ri => !frigoIngs.some(f => ri.includes(f) || f.includes(ri)));
+    if (!matched.length) return null;
+    return { idx, r, matched, missing, score: matched.length / rIngs.length };
+  }).filter(Boolean).sort((a, b) => b.score - a.score);
+
+  if (!scored.length) {
+    resEl.innerHTML = `<div class="frigo-empty">Aucune recette ne correspond à ces ingrédients.</div>`;
+    return;
+  }
+
+  let h = `<div class="frigo-results-title">${scored.length} recette${scored.length>1?'s':''} possible${scored.length>1?'s':''}</div>`;
+  scored.forEach(({ idx, r, matched, missing }) => {
+    h += `<div class="frigo-card" onclick="showDet(${idx})">
+      ${r.photo ? `<img class="frigo-card-photo" src="${r.photo}">` : `<div class="frigo-card-nophoto"></div>`}
+      <div class="frigo-card-info">
+        <div class="frigo-card-name">${r.name}</div>
+        <div class="frigo-card-match">✓ ${matched.join(', ')}</div>
+        ${missing.length ? `<div class="frigo-card-missing">Manque : ${missing.slice(0,3).join(', ')}${missing.length>3?' …':''}</div>` : ''}
+      </div>
+    </div>`;
+  });
+  resEl.innerHTML = h;
+}
+
+// Init frigo au chargement de la page courses
+function initFrigo() { renderFrigo(); }
