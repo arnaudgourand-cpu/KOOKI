@@ -304,7 +304,7 @@ function renderCal() {
     const isT   = today.getDate()===d && today.getMonth()===cM && today.getFullYear()===cY;
     h += `<div class="cday${isT?' tod':''}" onclick="openPlanOv('${key}',${d})">
       <div class="cnum">${d}</div>
-      ${meals.map((m,mi) => `<div class="cmeal"><span class="mn">${m.emoji||'🍽️'} ${m.name}</span><span class="rx" onclick="event.stopPropagation();rmMeal('${key}',${mi})">✕</span></div>`).join('')}
+      ${meals.length ? `<div class="cmeals">${meals.map(()=>`<div class="cdot"></div>`).join('')}</div>` : ''}
       <button class="cadd" onclick="event.stopPropagation();openPlanOv('${key}',${d})">+</button>
     </div>`;
   }
@@ -320,30 +320,52 @@ function changeMonth(d) {
 
 function openPlanOv(key, day) {
   pkey = key;
+  const meals = P[key] || [];
   document.getElementById('plantitle').textContent = `${day} ${MONTHS[cM]}`;
+
+  // Afficher les repas déjà planifiés ce jour
+  const existing = meals.length ? `<div style="margin-bottom:14px">
+    <div style="font-size:11px;font-weight:800;color:var(--tm);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Repas du jour</div>
+    ${meals.map((m,mi) => `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--rl);border-radius:10px;margin-bottom:6px">
+      <span style="font-size:14px;font-weight:700">${m.name}</span>
+      <button onclick="rmMeal('${key}',${mi});openPlanOv('${key}',${day})" style="background:none;border:none;color:var(--r);cursor:pointer;font-size:16px;font-weight:900;padding:0 4px">×</button>
+    </div>`).join('')}
+  </div>` : '';
+
+  document.getElementById('picklist').innerHTML = existing;
   renderPicklist('');
   openOv('ov-plan');
 }
 
 function renderPicklist(q) {
   const filtered = R.filter(r => !q || r.name.toLowerCase().includes(q.toLowerCase()));
+  const container = document.getElementById('picklist');
+  // Garder les repas existants, ajouter seulement la liste
+  const existingHtml = container.querySelector('[data-existing]');
+  
+  let h = `<div style="font-size:11px;font-weight:800;color:var(--tm);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Ajouter un repas</div>`;
   if (!R.length) {
-    document.getElementById('picklist').innerHTML = `<div class="empty"><span class="empty-ico">🍳</span><h3>Aucune recette</h3><p>Ajoutez d'abord des recettes.</p></div>`;
-    return;
+    h += `<div class="empty"><span class="empty-ico">🍳</span><h3>Aucune recette</h3><p>Ajoutez d'abord des recettes.</p></div>`;
+  } else if (!filtered.length) {
+    h += `<div class="empty"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3></div>`;
+  } else {
+    h += filtered.map(r => {
+      const i = R.indexOf(r);
+      return `<div class="pickitem" onclick="addMeal(${i})">
+        ${r.photo
+          ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">`
+          : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0"></div>`
+        }
+        <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
+      </div>`;
+    }).join('');
   }
-  let h = filtered.length === 0
-    ? `<div class="empty"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3></div>`
-    : filtered.map(r => {
-        const i = R.indexOf(r);
-        return `<div class="pickitem" onclick="addMeal(${i})">
-          ${r.photo
-            ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">`
-            : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px">${r.emoji||'🍽️'}</div>`
-          }
-          <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
-        </div>`;
-      }).join('');
-  document.getElementById('picklist').innerHTML = h;
+
+  // Remplacer seulement la partie liste (après les repas existants)
+  const listDiv = container.querySelector('[data-list]') || document.createElement('div');
+  listDiv.setAttribute('data-list', '');
+  listDiv.innerHTML = h;
+  if (!container.querySelector('[data-list]')) container.appendChild(listDiv);
 }
 
 function addMeal(ri) {
