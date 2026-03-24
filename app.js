@@ -269,7 +269,8 @@ async function importUrl() {
       })
     });
     const data = await res.json();
-    const raw = data.content.map(b => b.text||'').join('').replace(/```json|```/g,'').trim();
+    const raw = (data.content?.[0]?.text || data.candidates?.[0]?.content?.parts?.[0]?.text || '{}')
+      .replace(/```json|```/g,'').trim();
     urldat = JSON.parse(raw);
     urldat.url   = url;
     urldat.photo = null;
