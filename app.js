@@ -259,7 +259,7 @@ async function importUrl() {
   document.getElementById('spin').classList.add('on');
   document.getElementById('uprev').style.display = 'none';
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('https://kooki-api.arnaud-gourand.workers.dev/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
