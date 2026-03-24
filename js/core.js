@@ -31,7 +31,7 @@ function showPg(id, btn) {
   document.getElementById('pg-'+id).classList.add('on');
   if (btn) btn.classList.add('on');
   if (id==='planning') renderCal();
-  if (id==='shopping') renderShop();
+  if (id==='shopping') { renderShop(); initFrigo(); }
 }
 
 /* ══ TOAST ══ */
