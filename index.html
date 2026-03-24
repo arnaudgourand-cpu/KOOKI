@@ -74,6 +74,21 @@
     </div>
   </div>
   <div id="scontent"></div>
+
+  <!-- SECTION FRIGO -->
+  <div class="frigo-section">
+    <div class="frigo-title">
+      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
+      Qu'est-ce qu'il y a dans mon frigo ?
+    </div>
+    <p class="frigo-sub">Ajoutez vos ingrédients disponibles — je trouve les recettes qui correspondent.</p>
+    <div class="frigo-input-row">
+      <input type="text" id="frigo-input" placeholder="ex : poulet, tomates, riz…" onkeydown="if(event.key==='Enter')addFrigoIng()">
+      <button class="btn btn-r btn-sm" onclick="addFrigoIng()">Ajouter</button>
+    </div>
+    <div class="frigo-tags" id="frigo-tags"></div>
+    <div id="frigo-results"></div>
+  </div>
 </div>
 
 <!-- NAV BAS -->
