@@ -289,83 +289,88 @@ function confirmUrl() {
   toast('✅ Recette importée !');
 }
 
-/* ══════════ CALENDRIER ══════════ */
+/* ══════════ PLANNING SEMAINE ══════════ */
+const JOURS = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+let weekOffset = 0;
+
+function getWeekStart(offset) {
+  const d = new Date();
+  const monday = new Date(d);
+  monday.setDate(d.getDate() - ((d.getDay() + 6) % 7) + offset * 7);
+  monday.setHours(0,0,0,0);
+  return monday;
+}
+
 function renderCal() {
-  document.getElementById('mlbl').textContent = `${MONTHS[cM]} ${cY}`;
-  const first  = new Date(cY, cM, 1).getDay();
-  const days   = new Date(cY, cM+1, 0).getDate();
-  const offset = (first+6)%7;
-  const today  = new Date();
-  let h = WDAYS.map(d => `<div class="cdh">${d}</div>`).join('');
-  for (let i=0; i<offset; i++) h += `<div class="cday off"></div>`;
-  for (let d=1; d<=days; d++) {
-    const key   = `${cY}-${cM+1}-${d}`;
-    const meals = P[key]||[];
-    const isT   = today.getDate()===d && today.getMonth()===cM && today.getFullYear()===cY;
-    h += `<div class="cday${isT?' tod':''}" onclick="openPlanOv('${key}',${d})">
-      <div class="cnum">${d}</div>
-      ${meals.length ? `<div class="cmeals">${meals.map(()=>`<div class="cdot"></div>`).join('')}</div>` : ''}
-      <button class="cadd" onclick="event.stopPropagation();openPlanOv('${key}',${d})">+</button>
+  const start = getWeekStart(weekOffset);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const fmt = d => `${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  document.getElementById('week-lbl').textContent = `Semaine du ${fmt(start)}`;
+
+  let h = `<div class="week-grid">`;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    const key = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const meals = P[key] || [];
+    const isToday = d.getTime() === today.getTime();
+    const label = `${JOURS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+
+    h += `<div class="wday${isToday?' today':''}">
+      <div class="wday-header">
+        <div class="wday-title">
+          <span class="wday-name">${JOURS[d.getDay()]}</span>
+          <span class="wday-date${isToday?' tod':''}">${d.getDate()} ${MONTHS[d.getMonth()]}</span>
+        </div>
+        <button class="wday-add" onclick="openPlanOv('${key}','${label}')">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Planifier
+        </button>
+      </div>
+      ${meals.length ? `<div class="wday-meals">
+        ${meals.map((m,mi) => {
+          const rec = R[m.recipeIdx];
+          return `<div class="wmeal" onclick="showDet(${m.recipeIdx})">
+            ${rec?.photo ? `<img class="wmeal-photo" src="${rec.photo}">` : `<div class="wmeal-nophoto"></div>`}
+            <div class="wmeal-info">
+              <div class="wmeal-name">${m.name}</div>
+              <div class="wmeal-cat">${CATS[rec?.category]||'Plat'}</div>
+            </div>
+            <button class="wmeal-del" onclick="event.stopPropagation();rmMeal('${key}',${mi})">×</button>
+          </div>`;
+        }).join('')}
+      </div>` : ''}
     </div>`;
   }
-  document.getElementById('cgrid').innerHTML = h;
+  h += `</div>`;
+  document.getElementById('week-grid').innerHTML = h;
 }
 
-function changeMonth(d) {
-  cM += d;
-  if (cM<0)  { cM=11; cY--; }
-  if (cM>11) { cM=0;  cY++; }
-  renderCal();
-}
+function changeWeek(dir) { weekOffset += dir; renderCal(); }
 
-function openPlanOv(key, day) {
+function openPlanOv(key, label) {
   pkey = key;
-  const meals = P[key] || [];
-  document.getElementById('plantitle').textContent = `${day} ${MONTHS[cM]}`;
-
-  // Afficher les repas déjà planifiés ce jour
-  const existing = meals.length ? `<div style="margin-bottom:14px">
-    <div style="font-size:11px;font-weight:800;color:var(--tm);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Repas du jour</div>
-    ${meals.map((m,mi) => `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--rl);border-radius:10px;margin-bottom:6px">
-      <span style="font-size:14px;font-weight:700">${m.name}</span>
-      <button onclick="rmMeal('${key}',${mi});openPlanOv('${key}',${day})" style="background:none;border:none;color:var(--r);cursor:pointer;font-size:16px;font-weight:900;padding:0 4px">×</button>
-    </div>`).join('')}
-  </div>` : '';
-
-  document.getElementById('picklist').innerHTML = existing;
+  document.getElementById('plantitle').textContent = label;
   renderPicklist('');
   openOv('ov-plan');
 }
 
 function renderPicklist(q) {
   const filtered = R.filter(r => !q || r.name.toLowerCase().includes(q.toLowerCase()));
-  const container = document.getElementById('picklist');
-  // Garder les repas existants, ajouter seulement la liste
-  const existingHtml = container.querySelector('[data-existing]');
-  
-  let h = `<div style="font-size:11px;font-weight:800;color:var(--tm);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px">Ajouter un repas</div>`;
+  let h = '';
   if (!R.length) {
-    h += `<div class="empty"><span class="empty-ico">🍳</span><h3>Aucune recette</h3><p>Ajoutez d'abord des recettes.</p></div>`;
+    h = `<div class="empty"><span class="empty-ico">🍳</span><h3>Aucune recette</h3><p>Ajoutez d'abord des recettes.</p></div>`;
   } else if (!filtered.length) {
-    h += `<div class="empty"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3></div>`;
+    h = `<div class="empty"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3></div>`;
   } else {
-    h += filtered.map(r => {
+    h = filtered.map(r => {
       const i = R.indexOf(r);
       return `<div class="pickitem" onclick="addMeal(${i})">
-        ${r.photo
-          ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">`
-          : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0"></div>`
-        }
+        ${r.photo ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">` : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0"></div>`}
         <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
       </div>`;
     }).join('');
   }
-
-  // Remplacer seulement la partie liste (après les repas existants)
-  const listDiv = container.querySelector('[data-list]') || document.createElement('div');
-  listDiv.setAttribute('data-list', '');
-  listDiv.innerHTML = h;
-  if (!container.querySelector('[data-list]')) container.appendChild(listDiv);
+  document.getElementById('picklist').innerHTML = h;
 }
 
 function addMeal(ri) {
