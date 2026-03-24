@@ -269,9 +269,12 @@ async function importUrl() {
       })
     });
     const data = await res.json();
-    const raw = (data.content?.[0]?.text || data.candidates?.[0]?.content?.parts?.[0]?.text || '{}')
-      .replace(/```json|```/g,'').trim();
-    urldat = JSON.parse(raw);
+    console.log('Worker response:', JSON.stringify(data));
+    // Le Worker Gemini renvoie déjà { content: [{ text }] }
+    const rawText = data.content?.[0]?.text || '';
+    console.log('Raw text:', rawText);
+    const clean = rawText.replace(/```json|```/g,'').trim();
+    urldat = JSON.parse(clean);
     urldat.url   = url;
     urldat.photo = null;
     document.getElementById('pname').textContent = `${urldat.emoji||'🍽️'} ${urldat.name}`;
