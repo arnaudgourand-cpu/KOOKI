@@ -1,87 +1,74 @@
 /* ── FICHE RECETTE ── */
-
-/* Hero photo */
 .fiche-hero {
   position: relative;
-  width: 100%;
-  height: 280px;
-  margin: -20px -16px 0;
   width: calc(100% + 32px);
-  overflow: hidden;
+  margin: -20px -16px 0;
+  height: 260px;
   background: var(--c2);
+  overflow: hidden;
 }
-
-.fiche-photo {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-}
-
-.fiche-nophoto {
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, var(--c2), var(--bd));
-}
+.fiche-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fiche-nophoto { width: 100%; height: 100%; background: linear-gradient(135deg, var(--c2), var(--bd)); }
 
 .fiche-hero-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 40%);
+  background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 50%);
   display: flex; align-items: flex-start; justify-content: space-between;
   padding: 16px;
-  padding-top: calc(16px + env(safe-area-inset-top, 0px));
 }
-
 .fiche-back, .fiche-edit {
-  width: 38px; height: 38px;
-  border-radius: 50%; border: none;
+  width: 38px; height: 38px; border-radius: 50%; border: none;
   background: rgba(255,255,255,.2); backdrop-filter: blur(8px);
-  color: #fff; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .2s;
+  color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
 }
 .fiche-back:hover, .fiche-edit:hover { background: rgba(255,255,255,.35); }
 
-/* Body */
-.fiche-body {
-  padding: 20px 0 40px;
-}
+/* ── BODY ── */
+.fiche-body { padding: 20px 0 40px; }
+.fiche-title { font-size: 24px; font-weight: 900; color: var(--tx); margin-bottom: 10px; line-height: 1.2; }
 
-.fiche-title {
-  font-size: 26px; font-weight: 900;
-  color: var(--tx); line-height: 1.2;
-  margin-bottom: 12px;
-}
-
-/* Badges */
-.fiche-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+/* ── BADGES ── */
+.fiche-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
 .fiche-badge   { padding: 5px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; background: var(--rl); color: var(--r); }
 .fiche-badge-g { background: var(--gl); color: var(--g); }
 .fiche-badge-n { background: var(--c2); color: var(--tm); }
 
-/* Sections */
-.fiche-section { margin-bottom: 28px; }
-.fiche-section-title {
-  font-size: 18px; font-weight: 900;
-  color: var(--tx); margin-bottom: 14px;
-  padding-bottom: 8px;
+/* ── ONGLETS ── */
+.fiche-tabs {
+  display: flex; gap: 0;
   border-bottom: 2px solid var(--bd);
+  margin-bottom: 20px;
 }
+.fiche-tab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 0; border: none; background: none;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
+  color: var(--tl); cursor: pointer; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; transition: all .2s;
+}
+.fiche-tab.on { color: var(--r); border-bottom-color: var(--r); }
+.fiche-tab svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* Ingrédients */
-.fiche-ings { display: flex; flex-direction: column; gap: 0; }
+/* ── PANNEAUX ── */
+.fiche-panel { display: none; }
+.fiche-panel.on { display: block; }
+
+/* ── INGRÉDIENTS ── */
 .fiche-ing {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 0;
-  border-bottom: 1.5px solid var(--c2);
-  font-size: 15px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0; border-bottom: 1.5px solid var(--c2);
 }
 .fiche-ing:last-child { border-bottom: none; }
-.fiche-ing-name { font-weight: 700; color: var(--tx); }
-.fiche-ing-qty  { font-weight: 800; color: var(--r); font-size: 14px; }
-
-/* Étapes */
-.fiche-steps { display: flex; flex-direction: column; gap: 16px; }
-.fiche-step {
-  display: flex; gap: 14px; align-items: flex-start;
+.fiche-ing-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--r); flex-shrink: 0;
 }
+.fiche-ing-name { flex: 1; font-size: 15px; font-weight: 700; color: var(--tx); }
+.fiche-ing-qty  { font-size: 14px; font-weight: 800; color: var(--r); }
+
+/* ── ÉTAPES ── */
+.fiche-steps { display: flex; flex-direction: column; gap: 18px; }
+.fiche-step  { display: flex; gap: 14px; align-items: flex-start; }
 .fiche-step-num {
   width: 32px; height: 32px; border-radius: 50%;
   background: var(--r); color: #fff;
@@ -89,7 +76,7 @@
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 2px;
 }
-.fiche-step-text {
-  flex: 1; font-size: 15px; font-weight: 700;
-  color: var(--tx); line-height: 1.6;
-}
+.fiche-step-text { flex: 1; font-size: 15px; font-weight: 700; color: var(--tx); line-height: 1.6; }
+
+/* ── BOUTONS BAS ── */
+.fiche-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
