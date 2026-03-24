@@ -46,3 +46,24 @@
   .ssec { box-shadow: none; border: 1px solid #ddd; }
   .sitem.done { display: none; }
 }
+
+/* ── FRIGO ── */
+.frigo-section { margin-top: 28px; border-top: 2px solid var(--bd); padding-top: 22px; }
+.frigo-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--tx); margin-bottom: 6px; }
+.frigo-sub { font-size: 13px; color: var(--tl); font-weight: 700; margin-bottom: 14px; }
+.frigo-input-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.frigo-input-row input { flex: 1; }
+.frigo-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.frigo-tag { display: flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--c2); border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--tx); }
+.frigo-tag button { background: none; border: none; cursor: pointer; color: var(--tl); font-size: 14px; font-weight: 900; padding: 0; line-height: 1; }
+.frigo-tag button:hover { color: var(--r); }
+.frigo-results-title { font-size: 13px; font-weight: 800; color: var(--tm); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px; }
+.frigo-card { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--w); border-radius: 14px; margin-bottom: 8px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.05); border: 2px solid transparent; transition: border-color .15s; }
+.frigo-card:hover { border-color: var(--rm); }
+.frigo-card-photo { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+.frigo-card-nophoto { width: 52px; height: 52px; border-radius: 10px; background: var(--c2); flex-shrink: 0; }
+.frigo-card-info { flex: 1; min-width: 0; }
+.frigo-card-name { font-size: 14px; font-weight: 800; color: var(--tx); margin-bottom: 3px; }
+.frigo-card-match { font-size: 12px; font-weight: 700; color: var(--g); }
+.frigo-card-missing { font-size: 11px; font-weight: 700; color: var(--tl); margin-top: 2px; }
+.frigo-empty { text-align: center; padding: 20px; color: var(--tl); font-size: 13px; font-weight: 700; }
