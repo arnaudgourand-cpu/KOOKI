@@ -33,14 +33,8 @@
   display: flex; align-items: center; justify-content: center; font-size: 10px;
 }
 
-.cmeal {
-  font-size: 9px; font-weight: 800; background: var(--rl); color: var(--r);
-  border-radius: 4px; padding: 2px 4px; margin-bottom: 2px;
-  display: flex; align-items: center; gap: 2px; line-height: 1.3;
-}
-.cmeal .mn { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.cmeal .rx { opacity: .5; font-size: 8px; cursor: pointer; flex-shrink: 0; }
-.cmeal .rx:hover { opacity: 1; }
+.cmeals { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.cdot { width: 7px; height: 7px; border-radius: 50%; background: var(--r); flex-shrink: 0; }
 
 .cadd {
   margin-top: auto; width: 100%; background: none; border: none;
