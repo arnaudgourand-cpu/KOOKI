@@ -60,7 +60,7 @@ function renderRecipes() {
       </button>
       <div class="rcard-body">
         <div class="rcard-name">${r.name}</div>
-        <div class="rcard-meta">${[r.time&&`⏱ ${r.time} min`, r.servings&&`${r.servings} pers.`].filter(Boolean).join(' · ')}</div>
+        <div class="rcard-meta">${[r.time&&`⏱ ${r.time} min`, r.servings&&`${r.servings} pers.`, r.price&&`~${r.price}€`].filter(Boolean).join(' · ')}</div>
         <div class="rcard-row">
           <button class="rbtn rbtn-r" onclick="event.stopPropagation();goplan()">+ Planning</button>
           <button class="rbtn rbtn-g" onclick="event.stopPropagation();delR(${idx})">🗑</button>
@@ -125,6 +125,7 @@ function openFiche(i) {
         ${r.regime==='vege'?`<span class="fiche-badge fiche-badge-g">Végétarien</span>`:''}
         ${r.time?`<span class="fiche-badge fiche-badge-n">⏱ ${r.time} min</span>`:''}
         ${r.servings?`<span class="fiche-badge fiche-badge-n">${r.servings} pers.</span>`:''}
+        ${r.price?`<span class="fiche-badge fiche-badge-n">~${r.price} €</span>`:''}
       </div>
 
       <!-- ONGLETS -->
@@ -217,7 +218,7 @@ function clearPhoto() {
 /* ══ AJOUT / ÉDITION ══ */
 function openAdd() {
   editIdx = null;
-  ['rn','rt','rs','ri','rurl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['rn','rt','rs','rp','ri','rurl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('inglist').innerHTML = '';
   document.getElementById('spin').classList.remove('on');
   document.getElementById('uprev').style.display = 'none';
@@ -233,6 +234,7 @@ function openEdit(i) {
   document.getElementById('rn').value = r.name || '';
   document.getElementById('rt').value = r.time || '';
   document.getElementById('rs').value = r.servings || '';
+  document.getElementById('rp').value = r.price || '';
   document.getElementById('rc').value = r.category || 'plat';
   document.getElementById('rg').value = r.regime || 'normal';
   document.getElementById('ri').value = r.instructions || '';
@@ -278,6 +280,7 @@ function saveRecipe() {
     name, photo: photoData || null,
     time: document.getElementById('rt').value,
     servings: document.getElementById('rs').value,
+    price: document.getElementById('rp').value,
     category: document.getElementById('rc').value,
     regime: document.getElementById('rg').value || 'normal',
     ingredients: ings,
