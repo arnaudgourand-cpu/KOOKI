@@ -1,3 +1,9 @@
+function toggleFilters(btn) {
+  const panel = document.getElementById('filters-panel');
+  panel.classList.toggle('on');
+  btn.classList.toggle('on');
+}
+
 /* ══ FILTRES ══ */
 let activeFilter = 'all';
 let activeRegime = 'all';
