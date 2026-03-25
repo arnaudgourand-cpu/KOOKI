@@ -72,19 +72,37 @@ function renderPicklist(q) {
   } else {
     h = filtered.map(r => {
       const i = R.indexOf(r);
-      return `<div class="pickitem" onclick="addMeal(${i})">
-        ${r.photo ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">` : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0"></div>`}
-        <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
+      const base = parseInt(r.servings) || 4;
+      return `<div class="pickitem">
+        <div onclick="showDet(${i})" style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">
+          ${r.photo ? `<img src="${r.photo}" style="width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0">` : `<div style="width:48px;height:48px;border-radius:10px;background:var(--c2);flex-shrink:0"></div>`}
+          <div><div class="nm">${r.name}</div><div class="inf">${CATS[r.category]||'Plat'}${r.time?' · '+r.time+' min':''}</div></div>
+        </div>
+        <div class="pick-portions">
+          <button onclick="event.stopPropagation();pickPortionChange(${i},-1)">−</button>
+          <span id="pp-${i}">${base}</span>
+          <button onclick="event.stopPropagation();pickPortionChange(${i},1)">+</button>
+        </div>
+        <button class="btn btn-r btn-sm" onclick="addMeal(${i})" style="flex-shrink:0">+</button>
       </div>`;
     }).join('');
   }
   document.getElementById('picklist').innerHTML = h;
 }
 
+function pickPortionChange(ri, dir) {
+  const el = document.getElementById(`pp-${ri}`);
+  if (!el) return;
+  const val = Math.max(1, parseInt(el.textContent) + dir);
+  el.textContent = val;
+}
+
 function addMeal(ri) {
   if (!pkey) return;
   if (!P[pkey]) P[pkey] = [];
-  P[pkey].push({ name:R[ri].name, emoji:R[ri].emoji, recipeIdx:ri });
+  const portEl = document.getElementById(`pp-${ri}`);
+  const servings = portEl ? parseInt(portEl.textContent) : (parseInt(R[ri].servings) || 4);
+  P[pkey].push({ name:R[ri].name, recipeIdx:ri, servings });
   sv(); closeOv('ov-plan'); renderCal();
   toast('Repas planifié !');
 }
