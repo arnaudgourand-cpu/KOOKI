@@ -20,26 +20,33 @@
 
 <!-- PAGE RECETTES -->
 <div class="pg on" id="pg-recipes">
-  <div class="searchbar">
-    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input id="searchInput" type="text" placeholder="Cherche une recette…" oninput="renderRecipes()">
-  </div>
-  <div class="cat-filters" id="cat-filters">
-    <button class="cat-btn on" onclick="setFilter('all',this)">Tout</button>
-    <button class="cat-btn" onclick="setFilter('plat',this)">Plat</button>
-    <button class="cat-btn" onclick="setFilter('entree',this)">Entrée</button>
-    <button class="cat-btn" onclick="setFilter('dessert',this)">Dessert</button>
-    <button class="cat-btn" onclick="setFilter('pdej',this)">Petit-déj</button>
-    <button class="cat-btn" onclick="setFilter('snack',this)">Snack</button>
-  </div>
-  <div class="cat-filters" id="regime-filters">
-    <button class="cat-btn on" onclick="setRegime('all',this)">Tous les régimes</button>
-    <button class="cat-btn" onclick="setRegime('normal',this)">Normal</button>
-    <button class="cat-btn" onclick="setRegime('vege',this)">Végétarien</button>
-    <button class="cat-btn" id="fav-btn" onclick="toggleFavFilter(this)" style="display:flex;align-items:center;gap:6px">
-      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      Favoris
+  <div class="search-row">
+    <div class="searchbar">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="searchInput" type="text" placeholder="Cherche une recette…" oninput="renderRecipes()">
+    </div>
+    <button class="filter-btn" id="filter-btn" onclick="toggleFilters(this)">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
     </button>
+  </div>
+  <div class="filters-panel" id="filters-panel">
+    <div class="cat-filters" id="cat-filters">
+      <button class="cat-btn on" onclick="setFilter('all',this)">Tout</button>
+      <button class="cat-btn" onclick="setFilter('plat',this)">Plat</button>
+      <button class="cat-btn" onclick="setFilter('entree',this)">Entrée</button>
+      <button class="cat-btn" onclick="setFilter('dessert',this)">Dessert</button>
+      <button class="cat-btn" onclick="setFilter('pdej',this)">Petit-déj</button>
+      <button class="cat-btn" onclick="setFilter('snack',this)">Snack</button>
+    </div>
+    <div class="cat-filters" id="regime-filters">
+      <button class="cat-btn on" onclick="setRegime('all',this)">Tous les régimes</button>
+      <button class="cat-btn" onclick="setRegime('normal',this)">Normal</button>
+      <button class="cat-btn" onclick="setRegime('vege',this)">Végétarien</button>
+      <button class="cat-btn" id="fav-btn" onclick="toggleFavFilter(this)" style="display:flex;align-items:center;gap:6px">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Favoris
+      </button>
+    </div>
   </div>
   <div class="rtopbar">
     <span id="rcount">0 recette</span>
