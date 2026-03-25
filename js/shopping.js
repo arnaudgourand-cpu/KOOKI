@@ -20,10 +20,16 @@ function renderShop() {
       if (!rec?.ingredients) return;
       rec.ingredients.forEach(ing => {
         const k = ing.name.toLowerCase().trim();
-        if (!map[k]) map[k] = { name:ing.name, qtys:[] };
+        if (!map[k]) map[k] = { name:ing.name, qtys:[], manual:false };
         if (ing.qty) map[k].qtys.push(`${ing.qty}${ing.unit?' '+ing.unit:''}`);
       });
     });
+  });
+
+  // Ajouter les articles manuels dans la map sous "Autre"
+  manualItems.forEach((item, i) => {
+    const k = 'manual-' + i;
+    map[k] = { name: item.name, qtys: [], manual: true, manualIdx: i, done: item.done };
   });
 
   const items = Object.values(map);
@@ -34,20 +40,29 @@ function renderShop() {
 
   const secs = {};
   items.forEach(item => {
-    let cat = 'Autre';
-    for (const [c,kws] of Object.entries(FOODS)) {
-      if (kws.some(k => item.name.toLowerCase().includes(k))) { cat=c; break; }
+    let cat = item.manual ? 'Ajoutés manuellement' : 'Autre';
+    if (!item.manual) {
+      for (const [c,kws] of Object.entries(FOODS)) {
+        if (kws.some(k => item.name.toLowerCase().includes(k))) { cat=c; break; }
+      }
     }
     if (!secs[cat]) secs[cat] = [];
     secs[cat].push(item);
   });
 
-  const ORDER = ['Légumes','Fruits','Viandes & Poissons','Produits laitiers','Féculents','Épicerie','Autre'];
+  const ORDER = ['Légoutés manuellement','Légumes','Fruits','Viandes & Poissons','Produits laitiers','Féculents','Épicerie','Autre','Ajoutés manuellement'];
   let h = `<div class="ssections">`;
   ORDER.forEach(cat => {
     if (!secs[cat]) return;
-    h += `<div class="ssec"><div class="ssec-title">${SICO[cat]||'📦'} ${cat}</div>
+    h += `<div class="ssec"><div class="ssec-title">${SICO[cat]||'📝'} ${cat}</div>
       ${secs[cat].map(item => {
+        if (item.manual) {
+          return `<div class="sitem${item.done?' done':''}" onclick="toggleManualItem(${item.manualIdx})">
+            <div class="schk">${item.done?'✓':''}</div>
+            <div class="sname">${item.name}</div>
+            <button class="manual-item-del" onclick="event.stopPropagation();delManualItem(${item.manualIdx})">×</button>
+          </div>`;
+        }
         const ck = `${period}-${item.name}`, done = CK[ck];
         return `<div class="sitem${done?' done':''}" onclick="togChk('${ck}',this)">
           <div class="schk">${done?'✓':''}</div>
@@ -84,31 +99,26 @@ function addManualItem() {
   if (!val) return;
   manualItems.push({ name: val, done: false });
   saveManual(); input.value = '';
-  renderManual();
+  renderShop();
 }
 
 function toggleManualItem(i) {
   manualItems[i].done = !manualItems[i].done;
-  saveManual(); renderManual();
+  saveManual(); renderShop();
 }
 
 function delManualItem(i) {
   manualItems.splice(i, 1);
-  saveManual(); renderManual();
+  saveManual(); renderShop();
 }
 
-function renderManual() {
-  const el = document.getElementById('manual-list');
-  if (!manualItems.length) { el.innerHTML = ''; return; }
-  el.innerHTML = manualItems.map((item, i) => `
-    <div class="manual-item${item.done?' done':''}" onclick="toggleManualItem(${i})">
-      <div class="schk">${item.done?'✓':''}</div>
-      <span class="manual-item-name">${item.name}</span>
-      <button class="manual-item-del" onclick="event.stopPropagation();delManualItem(${i})">×</button>
-    </div>`).join('');
+function clearAllManual() {
+  if (!manualItems.length) return;
+  manualItems = [];
+  saveManual(); renderShop();
 }
 
-function initManual() { renderManual(); }
+function initManual() { renderShop(); }
 
 
 let frigoIngs = JSON.parse(localStorage.getItem('kk-frigo') || '[]');
