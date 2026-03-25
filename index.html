@@ -79,7 +79,18 @@
   </div>
   <div id="scontent"></div>
 
-  <!-- SECTION FRIGO -->
+  <!-- ARTICLES MANUELS -->
+  <div class="manual-section">
+    <div class="manual-title">
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Ajouter un article
+    </div>
+    <div class="frigo-input-row">
+      <input type="text" id="manual-input" placeholder="ex : lessive, pain, eau…" onkeydown="if(event.key==='Enter')addManualItem()">
+      <button class="btn btn-r btn-sm" onclick="addManualItem()">Ajouter</button>
+    </div>
+    <div id="manual-list"></div>
+  </div>
   <div class="frigo-section">
     <div class="frigo-title">
       <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
