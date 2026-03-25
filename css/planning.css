@@ -55,9 +55,14 @@
 
 /* ── PICKER ── */
 .picklist { display: flex; flex-direction: column; gap: 6px; max-height: 340px; overflow-y: auto; }
-.pickitem { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 12px; background: var(--c); cursor: pointer; border: 2px solid transparent; transition: all .15s; }
-.pickitem:hover { background: var(--rl); border-color: var(--rm); }
+.pickitem { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 12px; background: var(--c); cursor: pointer; border: 2px solid transparent; transition: all .15s; }
+.pickitem:hover { background: var(--rl); }
 .pickitem .nm  { font-size: 14px; font-weight: 800; }
 .pickitem .inf { font-size: 11px; color: var(--tl); font-weight: 700; }
+
+.pick-portions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.pick-portions button { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bd); background: var(--w); font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--tx); line-height: 1; transition: all .15s; }
+.pick-portions button:hover { border-color: var(--r); color: var(--r); }
+.pick-portions span { font-size: 14px; font-weight: 900; min-width: 20px; text-align: center; }
 
 @media (max-width: 480px) { .wmeal-photo, .wmeal-nophoto { width: 44px; height: 44px; } }
