@@ -41,7 +41,7 @@ function renderCal() {
             ${rec?.photo ? `<img class="wmeal-photo" src="${rec.photo}">` : `<div class="wmeal-nophoto"></div>`}
             <div class="wmeal-info">
               <div class="wmeal-name">${m.name}</div>
-              <div class="wmeal-cat">${CATS[rec?.category]||'Plat'}</div>
+              <div class="wmeal-cat">${CATS[rec?.category]||'Plat'}${m.servings ? ` · ${m.servings} pers.` : ''}</div>
             </div>
             <button class="wmeal-del" onclick="event.stopPropagation();rmMeal('${key}',${mi})">×</button>
           </div>`;
