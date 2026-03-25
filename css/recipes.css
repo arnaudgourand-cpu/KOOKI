@@ -1,5 +1,20 @@
 /* ── FILTRES ── */
-.cat-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; scrollbar-width: none; }
+.search-row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+.search-row .searchbar { flex: 1; margin-bottom: 0; }
+
+.filter-btn {
+  width: 46px; height: 46px; flex-shrink: 0;
+  border-radius: 999px; border: 2px solid var(--bd);
+  background: var(--w); color: var(--tm); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+}
+.filter-btn.on { background: var(--r); border-color: var(--r); color: #fff; }
+
+.filters-panel { display: none; margin-bottom: 16px; }
+.filters-panel.on { display: block; }
+
+.cat-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 10px; scrollbar-width: none; }
 .cat-filters::-webkit-scrollbar { display: none; }
 .cat-btn { padding: 7px 16px; border-radius: 999px; border: 2px solid var(--bd); background: var(--w); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; color: var(--tm); cursor: pointer; white-space: nowrap; transition: all .2s; flex-shrink: 0; }
 .cat-btn.on { background: var(--r); color: #fff; border-color: var(--r); }
