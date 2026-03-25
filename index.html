@@ -84,12 +84,12 @@
     <div class="manual-title">
       <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       Ajouter un article
+      <button class="btn-q" onclick="clearAllManual()" style="margin-left:auto;font-size:11px;padding:4px 10px">Tout effacer</button>
     </div>
     <div class="frigo-input-row">
       <input type="text" id="manual-input" placeholder="ex : lessive, pain, eau…" onkeydown="if(event.key==='Enter')addManualItem()">
       <button class="btn btn-r btn-sm" onclick="addManualItem()">Ajouter</button>
     </div>
-    <div id="manual-list"></div>
   </div>
   <div class="frigo-section">
     <div class="frigo-title">
