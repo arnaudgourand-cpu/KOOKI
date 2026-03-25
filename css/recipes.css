@@ -1,15 +1,16 @@
-/* ── FILTRES CATÉGORIE ── */
+/* ── FILTRES ── */
 .cat-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 16px; scrollbar-width: none; }
 .cat-filters::-webkit-scrollbar { display: none; }
 .cat-btn { padding: 7px 16px; border-radius: 999px; border: 2px solid var(--bd); background: var(--w); font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; color: var(--tm); cursor: pointer; white-space: nowrap; transition: all .2s; flex-shrink: 0; }
 .cat-btn.on { background: var(--r); color: #fff; border-color: var(--r); }
 .cat-btn:hover:not(.on) { border-color: var(--r); color: var(--r); }
-.searchbar {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--w); border: 2px solid var(--bd);
-  border-radius: 999px; padding: 10px 16px;
-  margin-bottom: 16px; transition: border-color .2s;
-}
+
+/* ── FAVORIS FILTRE ── */
+#fav-btn.on { background: #fce5dc; color: #E8431A; border-color: #E8431A; }
+#fav-btn.on svg { fill: #E8431A; stroke: #E8431A; }
+
+/* ── SEARCHBAR ── */
+.searchbar { display: flex; align-items: center; gap: 10px; background: var(--w); border: 2px solid var(--bd); border-radius: 999px; padding: 10px 16px; margin-bottom: 16px; transition: border-color .2s; }
 .searchbar:focus-within { border-color: var(--r); }
 .searchbar svg { width: 18px; height: 18px; stroke: var(--tl); fill: none; stroke-width: 2.2; stroke-linecap: round; flex-shrink: 0; }
 .searchbar input { flex: 1; border: none; background: none; outline: none; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: var(--tx); }
@@ -46,26 +47,28 @@
 .rcard-emoji { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 64px; background: var(--c2); }
 .rcard-grad  { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.75) 0%, rgba(0,0,0,.2) 45%, rgba(0,0,0,0) 100%); }
 
-#fav-btn.on { background: #fce5dc; color: #E8431A; border-color: #E8431A; }
-#fav-btn.on svg { fill: #E8431A; stroke: #E8431A; }
-  position: absolute; top: 10px; left: 10px;
-  width: 34px; height: 34px; border-radius: 50%; border: none;
-  background: rgba(255,255,255,.2); backdrop-filter: blur(8px);
+.rcard-heart {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,.55);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: all .2s;
 }
-.rcard-heart svg {
-  width: 18px; height: 18px;
-  stroke: #fff; fill: none; transition: all .2s;
-}
+.rcard-heart svg { width: 20px; height: 20px; stroke: #fff; fill: none; transition: all .2s; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rcard-heart.fav { background: #fff; }
 .rcard-heart.fav svg { stroke: #E8431A; fill: #E8431A; }
-.rcard-heart:hover { background: rgba(255,255,255,.35); }
+.rcard-heart:hover { transform: scale(1.1); }
+
+/* ── BADGE CAT ── */
+.rcard-cat {
   position: absolute; top: 10px; right: 10px;
   background: rgba(255,255,255,.18); backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,.25);
   border-radius: 999px; padding: 3px 10px;
   font-size: 10px; font-weight: 800; color: #fff; letter-spacing: .3px;
 }
+
+/* ── CORPS CARTE ── */
 .rcard-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 12px 12px; }
 .rcard-name { font-size: 14px; font-weight: 900; color: #fff; line-height: 1.3; margin-bottom: 5px; text-shadow: 0 1px 4px rgba(0,0,0,.5); }
 .rcard-meta { font-size: 11px; color: rgba(255,255,255,.8); font-weight: 700; margin-bottom: 8px; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
