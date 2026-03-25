@@ -108,9 +108,32 @@ function showDet(i) {
 }
 
 /* ══ FICHE COMPLÈTE ══ */
+let ficheServings = 0; // portions actuelles sur la fiche
+let ficheRecipeIdx = 0;
+
 function openFiche(i) {
+  ficheRecipeIdx = i;
   const r = R[i];
+  ficheServings = parseInt(r.servings) || 4;
+  renderFiche();
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById('pg-fiche').classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function renderFiche() {
+  const r = R[ficheRecipeIdx];
+  const base = parseInt(r.servings) || 4;
+  const ratio = ficheServings / base;
   const steps = r.instructions ? r.instructions.split('\n').filter(s => s.trim()) : [];
+
+  function scaleQty(qty) {
+    if (!qty) return '';
+    const n = parseFloat(qty);
+    if (isNaN(n)) return qty;
+    const scaled = Math.round(n * ratio * 10) / 10;
+    return scaled % 1 === 0 ? scaled.toString() : scaled.toString();
+  }
 
   const h = `
     <div class="fiche-hero">
@@ -119,7 +142,7 @@ function openFiche(i) {
         <button class="fiche-back" onclick="showPg('recipes', document.getElementById('ni-recipes'))">
           <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <button class="fiche-edit" onclick="openEdit(${i})">
+        <button class="fiche-edit" onclick="openEdit(${ficheRecipeIdx})">
           <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </button>
       </div>
@@ -130,8 +153,17 @@ function openFiche(i) {
         <span class="fiche-badge">${CATS[r.category]||'Plat'}</span>
         ${r.regime==='vege'?`<span class="fiche-badge fiche-badge-g">Végétarien</span>`:''}
         ${r.time?`<span class="fiche-badge fiche-badge-n">⏱ ${r.time} min</span>`:''}
-        ${r.servings?`<span class="fiche-badge fiche-badge-n">${r.servings} pers.</span>`:''}
         ${r.price?`<span class="fiche-badge fiche-badge-n">~${r.price} €</span>`:''}
+      </div>
+
+      <!-- PORTIONS -->
+      <div class="portions-row">
+        <span class="portions-label">Portions</span>
+        <div class="portions-ctrl">
+          <button class="portions-btn" onclick="changePortion(-1)">−</button>
+          <span class="portions-val">${ficheServings}</span>
+          <button class="portions-btn" onclick="changePortion(1)">+</button>
+        </div>
       </div>
 
       <!-- ONGLETS -->
@@ -153,7 +185,7 @@ function openFiche(i) {
             <div class="fiche-ing">
               <div class="fiche-ing-dot"></div>
               <span class="fiche-ing-name">${g.name}</span>
-              <span class="fiche-ing-qty">${[g.qty,g.unit].filter(Boolean).join(' ')}</span>
+              <span class="fiche-ing-qty">${[scaleQty(g.qty), g.unit].filter(Boolean).join(' ')}</span>
             </div>`).join('')
           : `<p style="color:var(--tl);font-weight:700;padding:20px 0">Aucun ingrédient renseigné.</p>`}
       </div>
@@ -178,9 +210,11 @@ function openFiche(i) {
     </div>`;
 
   document.getElementById('fiche-content').innerHTML = h;
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.getElementById('pg-fiche').classList.add('on');
-  window.scrollTo(0, 0);
+}
+
+function changePortion(dir) {
+  ficheServings = Math.max(1, ficheServings + dir);
+  renderFiche();
 }
 
 function ficheTab(panel, btn) {
