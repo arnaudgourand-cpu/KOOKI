@@ -18,10 +18,16 @@ function renderShop() {
     meals.forEach(meal => {
       const rec = R[meal.recipeIdx];
       if (!rec?.ingredients) return;
+      const base = parseInt(rec.servings) || 4;
+      const ratio = (meal.servings || base) / base;
       rec.ingredients.forEach(ing => {
         const k = ing.name.toLowerCase().trim();
         if (!map[k]) map[k] = { name:ing.name, qtys:[], manual:false };
-        if (ing.qty) map[k].qtys.push(`${ing.qty}${ing.unit?' '+ing.unit:''}`);
+        if (ing.qty) {
+          const n = parseFloat(ing.qty);
+          const scaled = isNaN(n) ? ing.qty : (Math.round(n * ratio * 10) / 10).toString();
+          map[k].qtys.push(`${scaled}${ing.unit?' '+ing.unit:''}`);
+        }
       });
     });
   });
