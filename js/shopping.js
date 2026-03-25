@@ -73,7 +73,44 @@ function uncheckAll() {
   sv(); renderShop();
 }
 
-/* ══ FRIGO ══ */
+/* ══ ARTICLES MANUELS ══ */
+let manualItems = JSON.parse(localStorage.getItem('kk-manual') || '[]');
+
+function saveManual() { localStorage.setItem('kk-manual', JSON.stringify(manualItems)); }
+
+function addManualItem() {
+  const input = document.getElementById('manual-input');
+  const val = input.value.trim();
+  if (!val) return;
+  manualItems.push({ name: val, done: false });
+  saveManual(); input.value = '';
+  renderManual();
+}
+
+function toggleManualItem(i) {
+  manualItems[i].done = !manualItems[i].done;
+  saveManual(); renderManual();
+}
+
+function delManualItem(i) {
+  manualItems.splice(i, 1);
+  saveManual(); renderManual();
+}
+
+function renderManual() {
+  const el = document.getElementById('manual-list');
+  if (!manualItems.length) { el.innerHTML = ''; return; }
+  el.innerHTML = manualItems.map((item, i) => `
+    <div class="manual-item${item.done?' done':''}" onclick="toggleManualItem(${i})">
+      <div class="schk">${item.done?'✓':''}</div>
+      <span class="manual-item-name">${item.name}</span>
+      <button class="manual-item-del" onclick="event.stopPropagation();delManualItem(${i})">×</button>
+    </div>`).join('');
+}
+
+function initManual() { renderManual(); }
+
+
 let frigoIngs = JSON.parse(localStorage.getItem('kk-frigo') || '[]');
 
 function saveFrigo() { localStorage.setItem('kk-frigo', JSON.stringify(frigoIngs)); }
