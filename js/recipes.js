@@ -55,7 +55,7 @@ function renderRecipes() {
 
   filtered.forEach(r => {
     const idx = R.indexOf(r);
-    h += `<div class="rcard" onclick="showDet(${idx})">
+    h += `<div class="rcard" onclick="openFiche(${idx})">
       ${r.photo ? `<img class="rcard-photo" src="${r.photo}" alt="${r.name}">` : `<div class="rcard-emoji"></div>`}
       <div class="rcard-grad"></div>
       <button class="rcard-heart${r.fav?' fav':''}" onclick="event.stopPropagation();toggleFav(${idx})">
