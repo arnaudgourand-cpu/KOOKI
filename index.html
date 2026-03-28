@@ -103,7 +103,7 @@
   <!-- BOUTON MON FRIGO -->
   <div class="frigo-btn-wrap">
     <button class="frigo-open-btn" onclick="openOv('ov-frigo')">
-      <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
       Mon frigo
     </button>
   </div>
@@ -271,8 +271,14 @@
     <!-- ONGLET PÉREMPTIONS -->
     <div id="ft-expiry" style="display:none">
       <div class="frigo-input-row" style="flex-wrap:wrap;gap:8px">
-        <input type="text" id="exp-name" placeholder="Nom de l'aliment" style="flex:1;min-width:120px">
-        <input type="date" id="exp-date" style="flex:1;min-width:130px">
+        <input type="text" id="exp-name" placeholder="Nom de l'aliment" style="flex:2;min-width:120px">
+        <input type="number" id="exp-duration" placeholder="Durée" min="1" style="flex:1;min-width:60px;max-width:80px">
+        <select id="exp-unit" style="flex:1;min-width:90px">
+          <option value="days">jours</option>
+          <option value="weeks">semaines</option>
+          <option value="months" selected>mois</option>
+          <option value="years">ans</option>
+        </select>
         <button class="btn btn-r btn-sm" onclick="addExpiryItem()" style="flex-shrink:0">Ajouter</button>
       </div>
       <div id="expiry-list" style="margin-top:14px"></div>
