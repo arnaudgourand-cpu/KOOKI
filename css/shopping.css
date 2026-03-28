@@ -61,7 +61,7 @@
 /* ── BOUTON MON FRIGO ── */
 .frigo-btn-wrap { margin-top: 24px; display: flex; justify-content: center; }
 .frigo-open-btn {
-  padding: 14px 48px; border-radius: 999px;
+  padding: 14px 80px; border-radius: 999px;
   border: 2px solid var(--bd); background: var(--w);
   font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
   color: var(--tx); cursor: pointer; display: inline-flex; align-items: center;
