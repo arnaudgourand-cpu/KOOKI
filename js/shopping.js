@@ -187,4 +187,63 @@ function renderFrigo() {
 }
 
 // Init frigo au chargement de la page courses
-function initFrigo() { renderFrigo(); }
+function initFrigo() { /* rien à faire, le frigo s'ouvre via le sheet */ }
+
+/* ══ ONGLETS FRIGO ══ */
+function frigoTab(tab, btn) {
+  document.querySelectorAll('#ov-frigo .tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('ft-search').style.display  = tab === 'search' ? 'block' : 'none';
+  document.getElementById('ft-expiry').style.display  = tab === 'expiry' ? 'block' : 'none';
+  if (tab === 'expiry') renderExpiryList();
+}
+
+/* ══ PÉREMPTIONS ══ */
+let expiryItems = JSON.parse(localStorage.getItem('kk-expiry') || '[]');
+
+function saveExpiry() { localStorage.setItem('kk-expiry', JSON.stringify(expiryItems)); }
+
+function addExpiryItem() {
+  const name = document.getElementById('exp-name').value.trim();
+  const date = document.getElementById('exp-date').value;
+  if (!name || !date) { alert('Renseignez le nom et la date.'); return; }
+  expiryItems.push({ name, date });
+  saveExpiry();
+  document.getElementById('exp-name').value = '';
+  document.getElementById('exp-date').value = '';
+  renderExpiryList();
+}
+
+function delExpiryItem(i) {
+  expiryItems.splice(i, 1);
+  saveExpiry(); renderExpiryList();
+}
+
+function renderExpiryList() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const sorted = expiryItems
+    .map((item, i) => ({ ...item, i, diff: Math.ceil((new Date(item.date) - today) / 86400000) }))
+    .sort((a, b) => a.diff - b.diff);
+
+  if (!sorted.length) {
+    document.getElementById('expiry-list').innerHTML = `<div class="frigo-empty">Aucun aliment suivi.</div>`;
+    return;
+  }
+
+  document.getElementById('expiry-list').innerHTML = sorted.map(item => {
+    let cls = 'exp-ok', label = '';
+    if (item.diff < 0)       { cls = 'exp-dead'; label = 'Périmé !'; }
+    else if (item.diff === 0){ cls = 'exp-urgent'; label = "Aujourd'hui !"; }
+    else if (item.diff <= 7) { cls = 'exp-urgent'; label = `Dans ${item.diff}j`; }
+    else                     { label = `Dans ${item.diff}j`; }
+
+    return `<div class="exp-item ${cls}">
+      <div class="exp-info">
+        <div class="exp-name">${item.name}</div>
+        <div class="exp-date">${new Date(item.date).toLocaleDateString('fr-FR')}</div>
+      </div>
+      <div class="exp-badge">${label}</div>
+      <button class="manual-item-del" onclick="delExpiryItem(${item.i})">×</button>
+    </div>`;
+  }).join('');
+}
