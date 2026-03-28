@@ -58,7 +58,31 @@
 .manual-item-del { background: none; border: none; color: var(--tl); font-size: 18px; cursor: pointer; padding: 0 4px; }
 .manual-item-del:hover { color: #EF4444; }
 
+/* ── BOUTON MON FRIGO ── */
+.frigo-btn-wrap { margin-top: 24px; }
+.frigo-open-btn {
+  width: 100%; padding: 16px; border-radius: 16px;
+  border: 2px solid var(--bd); background: var(--w);
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  color: var(--tx); cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 10px; transition: all .2s;
+}
+.frigo-open-btn:hover { border-color: var(--r); color: var(--r); }
+
+/* ── PÉREMPTIONS ── */
+.exp-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--w); border-radius: 12px; margin-bottom: 8px; border-left: 4px solid var(--bd); }
+.exp-ok     { border-left-color: var(--g); }
+.exp-urgent { border-left-color: #F59E0B; background: #FFFBEB; }
+.exp-dead   { border-left-color: #EF4444; background: #FEF2F2; }
+.exp-info   { flex: 1; }
+.exp-name   { font-size: 14px; font-weight: 800; color: var(--tx); }
+.exp-date   { font-size: 12px; font-weight: 700; color: var(--tl); margin-top: 2px; }
+.exp-badge  { font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: var(--c2); color: var(--tm); white-space: nowrap; }
+.exp-urgent .exp-badge { background: #FEF3C7; color: #D97706; }
+.exp-dead   .exp-badge { background: #FEE2E2; color: #DC2626; }
+
 /* ── FRIGO ── */
+.frigo-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .frigo-section { margin-top: 28px; border-top: 2px solid var(--bd); padding-top: 22px; }
 .frigo-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 900; color: var(--tx); margin-bottom: 6px; }
 .frigo-sub { font-size: 13px; color: var(--tl); font-weight: 700; margin-bottom: 14px; }
