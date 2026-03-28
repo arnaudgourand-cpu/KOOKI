@@ -98,18 +98,14 @@
       <button class="btn btn-r btn-sm" onclick="addManualItem()">Ajouter</button>
     </div>
   </div>
-  <div class="frigo-section">
-    <div class="frigo-title">
+  </div>
+
+  <!-- BOUTON MON FRIGO -->
+  <div class="frigo-btn-wrap">
+    <button class="frigo-open-btn" onclick="openOv('ov-frigo')">
       <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
-      Qu'est-ce qu'il y a dans mon frigo ?
-    </div>
-    <p class="frigo-sub">Ajoutez vos ingrédients disponibles — je trouve les recettes qui correspondent.</p>
-    <div class="frigo-input-row">
-      <input type="text" id="frigo-input" placeholder="ex : poulet, tomates, riz…" onkeydown="if(event.key==='Enter')addFrigoIng()">
-      <button class="btn btn-r btn-sm" onclick="addFrigoIng()">Ajouter</button>
-    </div>
-    <div class="frigo-tags" id="frigo-tags"></div>
-    <div id="frigo-results"></div>
+      Mon frigo
+    </button>
   </div>
 </div>
 
@@ -240,6 +236,48 @@
 <!-- PAGE FICHE RECETTE -->
 <div class="pg" id="pg-fiche">
   <div id="fiche-content"></div>
+</div>
+
+<!-- SHEET : MON FRIGO -->
+<div class="ov" id="ov-frigo">
+  <div class="sheet">
+    <div class="drag"></div>
+    <div class="shd">
+      <h3>Mon frigo</h3>
+      <button class="xbtn" onclick="closeOv('ov-frigo')">×</button>
+    </div>
+    <div class="tabs">
+      <button class="tab on" onclick="frigoTab('search', this)">
+        <svg class="tab-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Recettes
+      </button>
+      <button class="tab" onclick="frigoTab('expiry', this)">
+        <svg class="tab-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Péremptions
+      </button>
+    </div>
+
+    <!-- ONGLET RECETTES -->
+    <div id="ft-search">
+      <p style="font-size:13px;color:var(--tl);font-weight:700;margin-bottom:12px">Ajoutez vos ingrédients disponibles — je trouve les recettes qui correspondent.</p>
+      <div class="frigo-input-row">
+        <input type="text" id="frigo-input" placeholder="ex : poulet, tomates, riz…" onkeydown="if(event.key==='Enter')addFrigoIng()">
+        <button class="btn btn-r btn-sm" onclick="addFrigoIng()">Ajouter</button>
+      </div>
+      <div class="frigo-tags" id="frigo-tags"></div>
+      <div id="frigo-results"></div>
+    </div>
+
+    <!-- ONGLET PÉREMPTIONS -->
+    <div id="ft-expiry" style="display:none">
+      <div class="frigo-input-row" style="flex-wrap:wrap;gap:8px">
+        <input type="text" id="exp-name" placeholder="Nom de l'aliment" style="flex:1;min-width:120px">
+        <input type="date" id="exp-date" style="flex:1;min-width:130px">
+        <button class="btn btn-r btn-sm" onclick="addExpiryItem()" style="flex-shrink:0">Ajouter</button>
+      </div>
+      <div id="expiry-list" style="margin-top:14px"></div>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
