@@ -204,13 +204,22 @@ let expiryItems = JSON.parse(localStorage.getItem('kk-expiry') || '[]');
 function saveExpiry() { localStorage.setItem('kk-expiry', JSON.stringify(expiryItems)); }
 
 function addExpiryItem() {
-  const name = document.getElementById('exp-name').value.trim();
-  const date = document.getElementById('exp-date').value;
-  if (!name || !date) { alert('Renseignez le nom et la date.'); return; }
-  expiryItems.push({ name, date });
+  const name     = document.getElementById('exp-name').value.trim();
+  const duration = parseInt(document.getElementById('exp-duration').value);
+  const unit     = document.getElementById('exp-unit').value;
+  if (!name || !duration || duration < 1) { alert('Renseignez le nom et la durée.'); return; }
+
+  // Calculer la date d'expiration
+  const date = new Date();
+  if (unit === 'days')   date.setDate(date.getDate() + duration);
+  if (unit === 'weeks')  date.setDate(date.getDate() + duration * 7);
+  if (unit === 'months') date.setMonth(date.getMonth() + duration);
+  if (unit === 'years')  date.setFullYear(date.getFullYear() + duration);
+
+  expiryItems.push({ name, date: date.toISOString().split('T')[0] });
   saveExpiry();
-  document.getElementById('exp-name').value = '';
-  document.getElementById('exp-date').value = '';
+  document.getElementById('exp-name').value     = '';
+  document.getElementById('exp-duration').value = '';
   renderExpiryList();
 }
 
@@ -231,18 +240,23 @@ function renderExpiryList() {
   }
 
   document.getElementById('expiry-list').innerHTML = sorted.map(item => {
-    let cls = 'exp-ok', label = '';
-    if (item.diff < 0)       { cls = 'exp-dead'; label = 'Périmé !'; }
-    else if (item.diff === 0){ cls = 'exp-urgent'; label = "Aujourd'hui !"; }
-    else if (item.diff <= 7) { cls = 'exp-urgent'; label = `Dans ${item.diff}j`; }
-    else                     { label = `Dans ${item.diff}j`; }
+    let cls = 'exp-ok', timeLabel = '';
+    const d = item.diff;
+    if (d < 0)      { cls = 'exp-dead';   timeLabel = `Périmé depuis ${Math.abs(d)}j`; }
+    else if (d === 0){ cls = 'exp-urgent'; timeLabel = "Expire aujourd'hui !"; }
+    else if (d <= 7) { cls = 'exp-urgent'; timeLabel = `Encore ${d} jour${d>1?'s':''}`; }
+    else if (d < 30) { timeLabel = `Encore ${d} jours`; }
+    else if (d < 365){ const m = Math.round(d/30); timeLabel = `Encore ~${m} mois`; }
+    else             { const y = Math.round(d/365); timeLabel = `Encore ~${y} an${y>1?'s':''}`; }
+
+    const dateStr = new Date(item.date).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
 
     return `<div class="exp-item ${cls}">
       <div class="exp-info">
         <div class="exp-name">${item.name}</div>
-        <div class="exp-date">${new Date(item.date).toLocaleDateString('fr-FR')}</div>
+        <div class="exp-date">Périme le ${dateStr}</div>
       </div>
-      <div class="exp-badge">${label}</div>
+      <div class="exp-badge">${timeLabel}</div>
       <button class="manual-item-del" onclick="delExpiryItem(${item.i})">×</button>
     </div>`;
   }).join('');
