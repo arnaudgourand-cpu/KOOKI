@@ -35,6 +35,13 @@ function showPg(id, btn) {
   if (id==='frigo')    { renderFrigo(); }
 }
 
+function openFrigoPage() {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.getElementById('pg-frigo').classList.add('on');
+  renderFrigo();
+  window.scrollTo(0, 0);
+}
+
 /* ══ TOAST ══ */
 function toast(msg) {
   const el = document.getElementById('toast');
