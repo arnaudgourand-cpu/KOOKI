@@ -59,13 +59,13 @@
 .manual-item-del:hover { color: #EF4444; }
 
 /* ── BOUTON MON FRIGO ── */
-.frigo-btn-wrap { margin-top: 24px; }
+.frigo-btn-wrap { margin-top: 24px; display: flex; justify-content: center; }
 .frigo-open-btn {
-  width: 100%; padding: 16px; border-radius: 16px;
+  padding: 12px 24px; border-radius: 999px;
   border: 2px solid var(--bd); background: var(--w);
-  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
-  color: var(--tx); cursor: pointer; display: flex; align-items: center;
-  justify-content: center; gap: 10px; transition: all .2s;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900;
+  color: var(--tx); cursor: pointer; display: inline-flex; align-items: center;
+  gap: 8px; transition: all .2s;
 }
 .frigo-open-btn:hover { border-color: var(--r); color: var(--r); }
 
