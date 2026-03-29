@@ -20,22 +20,22 @@ const FOODS = {
 };
 
 const SICO = {
-  'Primeur - Légumes':    '🥦',
-  'Primeur - Fruits':     '🍎',
-  'Viandes & Charcuterie':'🥩',
-  'Poissonnerie':         '🐟',
-  'Produits laitiers':    '🧀',
-  'Boulangerie':          '🥖',
-  'Épicerie salée':       '🫙',
-  'Épicerie sucrée':      '🍫',
-  'Boissons':             '🥤',
-  'Apéro':                '🫒',
-  'Desserts':             '🍮',
-  'Hygiène & Soin':       '🧴',
-  'Maison & Entretien':   '🧹',
-  'Animaux':              '🐾',
-  'Autre':                '📦',
-  'Ajoutés manuellement': '📝',
+  'Primeur - Légumes':    '#5cb85c',
+  'Primeur - Fruits':     '#f0a500',
+  'Viandes & Charcuterie':'#c0392b',
+  'Poissonnerie':         '#2980b9',
+  'Produits laitiers':    '#f5e642',
+  'Boulangerie':          '#d4a55a',
+  'Épicerie salée':       '#7f8c8d',
+  'Épicerie sucrée':      '#e91e8c',
+  'Boissons':             '#3498db',
+  'Apéro':                '#8e44ad',
+  'Desserts':             '#e74c6a',
+  'Hygiène & Soin':       '#1abc9c',
+  'Maison & Entretien':   '#27ae60',
+  'Animaux':              '#e67e22',
+  'Ajoutés manuellement': '#bdc3c7',
+  'Autre':                '#95a5a6',
 };
 
 /* ══ STATE ══ */
