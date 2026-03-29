@@ -54,7 +54,7 @@ function renderShop() {
     secs[cat].push(item);
   });
 
-  const ORDER = ['Légumes','Fruits','Viandes & Poissons','Produits laitiers','Féculents','Épicerie','Autre','Ajoutés manuellement'];
+  const ORDER = ['Primeur - Légumes','Primeur - Fruits','Viandes & Charcuterie','Poissonnerie','Produits laitiers','Boulangerie','Épicerie salée','Épicerie sucrée','Boissons','Apéro','Desserts','Hygiène & Soin','Maison & Entretien','Animaux','Autre','Ajoutés manuellement'];
   let h = `<div class="ssections">`;
   ORDER.forEach(cat => {
     if (!secs[cat]) return;
@@ -86,7 +86,7 @@ function renderShop() {
 }
 
 /* ══ CHANGEMENT DE CATÉGORIE ══ */
-const CATS_SHOP = ['Légumes','Fruits','Viandes & Poissons','Produits laitiers','Féculents','Épicerie','Autre'];
+const CATS_SHOP = ['Primeur - Légumes','Primeur - Fruits','Viandes & Charcuterie','Poissonnerie','Produits laitiers','Boulangerie','Épicerie salée','Épicerie sucrée','Boissons','Apéro','Desserts','Hygiène & Soin','Maison & Entretien','Animaux','Autre'];
 
 function openCatPicker(itemName) {
   const current = CAT_OVERRIDE[itemName.toLowerCase()] || 'Autre';
