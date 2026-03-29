@@ -81,6 +81,14 @@
 .exp-urgent .exp-badge { background: #FEF3C7; color: #D97706; }
 .exp-dead   .exp-badge { background: #FEE2E2; color: #DC2626; }
 
+.scat-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--tl); padding: 2px 4px; border-radius: 4px;
+  display: flex; align-items: center; transition: color .15s;
+}
+.scat-btn:hover { color: var(--r); }
+.pickitem.active { background: var(--rl); color: var(--r); font-weight: 900; }
+
 /* ── FRIGO ── */
 .frigo-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
 .frigo-section { margin-top: 28px; border-top: 2px solid var(--bd); padding-top: 22px; }
