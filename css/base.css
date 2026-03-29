@@ -65,7 +65,25 @@ body {
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
 @media (min-width: 768px) {
-  #pg-recipes { max-width: 1400px; padding: 28px 40px; }
+  #pg-recipes {
+    max-width: 100%;
+    padding: 28px 0;
+  }
+  #pg-recipes .searchbar,
+  #pg-recipes .filters-panel,
+  #pg-recipes .rtopbar,
+  #pg-recipes #cat-filters,
+  #pg-recipes #regime-filters,
+  #pg-recipes .search-row {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  #pg-recipes .rgrid {
+    padding: 0 24px;
+  }
 }
 
 /* ── BOUTONS ── */
