@@ -131,6 +131,41 @@
   font-size: 22px; font-weight: 800; line-height: 1.5; color: var(--tx);
 }
 
+/* ── PANEL MINUTEUR ── */
+.cook-timer-badge {
+  font-size: 13px; font-weight: 900; color: var(--r);
+  background: var(--rl); padding: 4px 10px; border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+.cook-timer-panel {
+  background: var(--w); border-radius: 20px;
+  margin: 0 16px 16px; padding: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,.1);
+  animation: slideDown .2s ease;
+}
+@keyframes slideDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:none; } }
+
+.cook-timer-tabs { display: flex; background: var(--c); border-radius: 12px; padding: 3px; gap: 3px; margin-bottom: 16px; }
+.cook-ttab { flex:1; padding:8px; border:none; border-radius:9px; background:none; font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; color:var(--tl); cursor:pointer; transition:all .2s; }
+.cook-ttab.on { background:var(--w); color:var(--tx); box-shadow:0 1px 6px rgba(0,0,0,.08); }
+
+.cook-timer-display {
+  font-size: 48px; font-weight: 900; text-align: center;
+  font-variant-numeric: tabular-nums; letter-spacing: -2px;
+  color: var(--tx); margin-bottom: 12px;
+}
+.cook-timer-display.urgent { color: var(--r); animation: pulse .5s ease infinite alternate; }
+@keyframes pulse { from { opacity:1; } to { opacity:.4; } }
+
+.cook-timer-controls { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:10px; }
+.cook-time-btn { padding:7px 11px; border-radius:999px; border:2px solid var(--bd); background:var(--w); color:var(--tx); font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; cursor:pointer; }
+.cook-time-btn:hover { border-color:var(--r); color:var(--r); }
+.cook-timer-main-btn { padding:10px 20px; border-radius:999px; border:none; background:var(--r); color:#fff; font-family:'Nunito',sans-serif; font-size:14px; font-weight:900; cursor:pointer; }
+.cook-timer-main-btn:hover { opacity:.85; }
+.cook-reset-btn { display:block; margin:10px auto 0; background:none; border:none; color:var(--tl); font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; cursor:pointer; text-decoration:underline; }
+.cook-panel-close { display:block; width:100%; margin-top:14px; padding:10px; border-radius:12px; border:2px solid var(--bd); background:none; font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; color:var(--tm); cursor:pointer; }
+.cook-panel-close:hover { border-color:var(--r); color:var(--r); }
+
 /* ── NAVIGATION ── */
 .cook-nav { display: flex; gap: 12px; padding: 0 20px 40px; }
 .cook-nav-btn {
