@@ -58,7 +58,7 @@ function renderShop() {
   let h = `<div class="ssections">`;
   ORDER.forEach(cat => {
     if (!secs[cat]) return;
-    h += `<div class="ssec"><div class="ssec-title">${SICO[cat]||'📝'} ${cat}</div>
+    h += `<div class="ssec"><div class="ssec-title"><span class="ssec-dot" style="background:${SICO[cat]||'#95a5a6'}"></span>${cat}</div>
       ${secs[cat].map(item => {
         if (item.manual) {
           return `<div class="sitem${item.done?' done':''}" onclick="toggleManualItem(${item.manualIdx})">
