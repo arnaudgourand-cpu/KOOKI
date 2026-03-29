@@ -1,345 +1,146 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Kooki</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,700;0,800;0,900;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css">
-<link rel="stylesheet" href="css/recipes.css">
-<link rel="stylesheet" href="css/planning.css">
-<link rel="stylesheet" href="css/shopping.css">
-<link rel="stylesheet" href="css/modals.css">
-<link rel="stylesheet" href="css/fiche.css">
-</head>
-<body>
+/* ── FICHE RECETTE ── */
+.fiche-hero {
+  position: relative;
+  width: calc(100% + 32px);
+  margin: -20px -16px 0;
+  height: 260px;
+  background: var(--c2);
+  overflow: hidden;
+}
+.fiche-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fiche-nophoto { width: 100%; height: 100%; background: linear-gradient(135deg, var(--c2), var(--bd)); }
 
-<header class="topbar">
-  <div class="logo">kooki<b>.</b></div>
-</header>
+.fiche-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35) 0%, transparent 50%);
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 16px;
+}
+.fiche-back, .fiche-edit {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,.2); backdrop-filter: blur(8px);
+  color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.fiche-back:hover, .fiche-edit:hover { background: rgba(255,255,255,.35); }
 
-<!-- PAGE RECETTES -->
-<div class="pg on" id="pg-recipes">
-  <div class="search-row">
-    <div class="searchbar">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="searchInput" type="text" placeholder="Cherche une recette…" oninput="renderRecipes()">
-    </div>
-    <button class="filter-btn" id="filter-btn" onclick="toggleFilters(this)">
-      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="filters-panel" id="filters-panel">
-    <div class="cat-filters" id="cat-filters">
-      <button class="cat-btn on" onclick="setFilter('all',this)">Tout</button>
-      <button class="cat-btn" onclick="setFilter('plat',this)">Plat</button>
-      <button class="cat-btn" onclick="setFilter('entree',this)">Entrée</button>
-      <button class="cat-btn" onclick="setFilter('dessert',this)">Dessert</button>
-      <button class="cat-btn" onclick="setFilter('pdej',this)">Petit-déj</button>
-      <button class="cat-btn" onclick="setFilter('snack',this)">Snack</button>
-    </div>
-    <div class="cat-filters" id="regime-filters">
-      <button class="cat-btn on" onclick="setRegime('all',this)">Tous les régimes</button>
-      <button class="cat-btn" onclick="setRegime('normal',this)">Normal</button>
-      <button class="cat-btn" onclick="setRegime('vege',this)">Végétarien</button>
-      <button class="cat-btn" id="fav-btn" onclick="toggleFavFilter(this)" style="display:flex;align-items:center;gap:6px">
-        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Favoris
-      </button>
-    </div>
-  </div>
-  <div class="rtopbar">
-    <span id="rcount">0 recette</span>
-    <button class="btn btn-r btn-sm" onclick="openAdd()">+ Ajouter</button>
-  </div>
-  <div class="rgrid" id="rgrid"></div>
-</div>
+/* ── BODY ── */
+.fiche-body { padding: 20px 0 40px; }
+.fiche-title { font-size: 24px; font-weight: 900; color: var(--tx); margin-bottom: 10px; line-height: 1.2; }
 
-<!-- PAGE PLANNING -->
-<div class="pg" id="pg-planning">
-  <div class="plan-top">
-    <div class="mnav">
-      <button onclick="changeWeek(-1)">‹</button>
-      <strong id="week-lbl"></strong>
-      <button onclick="changeWeek(1)">›</button>
-    </div>
-  </div>
-  <div id="week-grid"></div>
-</div>
+/* ── BADGES ── */
+.fiche-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.fiche-badge   { padding: 5px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; background: var(--rl); color: var(--r); }
+.fiche-badge-g { background: var(--gl); color: var(--g); }
+.fiche-badge-n { background: var(--c2); color: var(--tm); }
 
-<!-- PAGE COURSES -->
-<div class="pg" id="pg-shopping">
-  <div class="shop-top">
-    <h2>Courses</h2>
-    <div style="display:flex;gap:8px;align-items:center">
-      <select class="psel" id="speriod" onchange="renderShop()">
-        <option value="week">Cette semaine</option>
-        <option value="month">Ce mois</option>
-        <option value="all">Tout</option>
-      </select>
-      <button class="btn-q" onclick="uncheckAll()">↺</button>
-      <button class="print-btn" onclick="window.print()">
-        <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        Imprimer
-      </button>
-    </div>
-  </div>
-  <div id="scontent"></div>
+/* ── ONGLETS ── */
+.fiche-tabs {
+  display: flex; gap: 0;
+  border-bottom: 2px solid var(--bd);
+  margin-bottom: 20px;
+}
+.fiche-tab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 0; border: none; background: none;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800;
+  color: var(--tl); cursor: pointer; border-bottom: 3px solid transparent;
+  margin-bottom: -2px; transition: all .2s;
+}
+.fiche-tab.on { color: var(--tx); border-bottom-color: var(--tx); }
+.fiche-tab svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-  <!-- ARTICLES MANUELS -->
-  <div class="manual-section">
-    <div class="manual-title">
-      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Ajouter un article
-      <button class="btn-q" onclick="clearAllManual()" style="margin-left:auto;font-size:11px;padding:4px 10px">Tout effacer</button>
-    </div>
-    <div class="frigo-input-row">
-      <input type="text" id="manual-input" placeholder="ex : lessive, pain, eau…" onkeydown="if(event.key==='Enter')addManualItem()">
-      <button class="btn btn-r btn-sm" onclick="addManualItem()">Ajouter</button>
-    </div>
-  </div>
+/* ── PANNEAUX ── */
+.fiche-panel { display: none; }
+.fiche-panel.on { display: block; }
 
-  <!-- BOUTON MON FRIGO -->
-  <div class="frigo-btn-wrap">
-    <button class="frigo-open-btn" onclick="openFrigoPage()">
-      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
-      Mon frigo
-    </button>
-  </div>
-</div>
+/* ── INGRÉDIENTS ── */
+.fiche-ing {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0; border-bottom: 1.5px solid var(--c2);
+}
+.fiche-ing:last-child { border-bottom: none; }
+.fiche-ing-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--r); flex-shrink: 0;
+}
+.fiche-ing-name { flex: 1; font-size: 15px; font-weight: 700; color: var(--tx); }
+.fiche-ing-qty  { font-size: 14px; font-weight: 800; color: var(--r); }
 
-<!-- PAGE MON FRIGO -->
-<div class="pg" id="pg-frigo">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
-    <button onclick="showPg('shopping', document.getElementById('ni-shopping'))" style="width:36px;height:36px;border-radius:50%;border:2px solid var(--bd);background:var(--w);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
-      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <h2 style="font-size:20px;font-weight:900">Mon frigo</h2>
-  </div>
-  <div class="tabs" style="margin-bottom:20px">
-    <button class="tab on" onclick="frigoTab('search', this)">
-      <svg class="tab-ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Recettes
-    </button>
-    <button class="tab" onclick="frigoTab('expiry', this)">
-      <svg class="tab-ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      Péremptions
-    </button>
-  </div>
+/* ── ÉTAPES ── */
+.fiche-steps { display: flex; flex-direction: column; gap: 18px; }
+.fiche-step  { display: flex; gap: 14px; align-items: flex-start; }
+.fiche-step-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--r); color: #fff;
+  font-size: 14px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
+.fiche-step-text { flex: 1; font-size: 15px; font-weight: 700; color: var(--tx); line-height: 1.6; }
 
-  <!-- ONGLET RECETTES -->
-  <div id="ft-search">
-    <p style="font-size:13px;color:var(--tl);font-weight:700;margin-bottom:12px">Ajoutez vos ingrédients disponibles — je trouve les recettes qui correspondent.</p>
-    <div class="frigo-input-row">
-      <input type="text" id="frigo-input" placeholder="ex : poulet, tomates, riz…" onkeydown="if(event.key==='Enter')addFrigoIng()">
-      <button class="btn btn-r btn-sm" onclick="addFrigoIng()">Ajouter</button>
-    </div>
-    <div class="frigo-tags" id="frigo-tags"></div>
-    <div id="frigo-results"></div>
-  </div>
+/* ── PORTIONS ── */
+.portions-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 2px solid var(--bd); margin-bottom: 20px; }
+.portions-label { font-size: 15px; font-weight: 900; color: var(--tx); }
+.portions-ctrl { display: flex; align-items: center; gap: 16px; }
+.portions-btn { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--bd); background: var(--w); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--tx); transition: all .15s; line-height: 1; }
+.portions-btn:hover { border-color: var(--r); color: var(--r); }
+.portions-val { font-size: 18px; font-weight: 900; color: var(--tx); min-width: 24px; text-align: center; }
 
-  <!-- ONGLET PÉREMPTIONS -->
-  <div id="ft-expiry" style="display:none">
-    <div class="frigo-input-row" style="flex-wrap:wrap;gap:8px;margin-bottom:16px">
-      <input type="text" id="exp-name" placeholder="Nom de l'aliment" style="flex:2;min-width:120px">
-      <input type="number" id="exp-duration" placeholder="Durée" min="1" style="flex:1;min-width:60px;max-width:80px">
-      <select id="exp-unit" style="flex:1;min-width:90px">
-        <option value="days">jours</option>
-        <option value="weeks">semaines</option>
-        <option value="months" selected>mois</option>
-        <option value="years">ans</option>
-      </select>
-      <button class="btn btn-r btn-sm" onclick="addExpiryItem()" style="flex-shrink:0">Ajouter</button>
-    </div>
-    <div id="expiry-list"></div>
-  </div>
-</div>
+/* ── BOUTON MODE CUISSON ── */
+.btn-cook {
+  width: 100%; padding: 14px; border-radius: 14px;
+  border: 2px solid var(--bd); background: var(--w); color: var(--tx);
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 8px; transition: all .2s;
+}
+.btn-cook:hover { border-color: var(--r); color: var(--r); }
 
-<!-- NAV BAS -->
-<nav class="bnav">
-  <button class="ni on" id="ni-recipes" onclick="showPg('recipes',this)">
-    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-    <span>Recettes</span>
-  </button>
-  <button class="ni" id="ni-planning" onclick="showPg('planning',this)">
-    <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" fill="none"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    <span>Planning</span>
-  </button>
-  <button class="ni" id="ni-shopping" onclick="showPg('shopping',this)">
-    <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-    <span>Courses</span>
-  </button>
-</nav>
+/* ── MODE CUISSON PLEIN ÉCRAN ── */
+.cook-wrap {
+  min-height: 100vh; display: flex; flex-direction: column;
+  background: var(--c); color: var(--tx); padding: 0;
+  user-select: none;
+}
 
-<!-- SHEET : AJOUT / ÉDITION RECETTE -->
-<div class="ov" id="ov-add">
-  <div class="sheet">
-    <div class="drag"></div>
-    <div class="shd">
-      <h3>Nouvelle recette</h3>
-      <button class="xbtn" onclick="closeOv('ov-add')">×</button>
-    </div>
-    <div class="tabs">
-      <button class="tab on" onclick="swTab('manual')">
-        <svg class="tab-ico" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Manuel
-      </button>
-      <button class="tab" onclick="swTab('url')">
-        <svg class="tab-ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Depuis un lien
-      </button>
-    </div>
+.cook-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 12px;
+}
+.cook-close {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--bd); background: var(--w);
+  color: var(--tx); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.cook-num { font-size: 14px; font-weight: 800; color: var(--tl); }
 
-    <div id="t-manual">
-      <div class="fg"><label>Nom</label><input id="rn" placeholder="ex : Poulet rôti"></div>
-      <div class="fg">
-        <label>Photo</label>
-        <div id="photo-preview" style="display:none;margin-bottom:8px;border-radius:12px;overflow:hidden;height:140px;background:#111;position:relative">
-          <img id="photo-img" style="width:100%;height:100%;object-fit:cover;display:block">
-          <button onclick="clearPhoto()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:999px;width:26px;height:26px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">×</button>
-        </div>
-        <label for="photo-input" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border:2px dashed var(--bd);border-radius:12px;cursor:pointer;color:var(--tm);font-size:13px;font-weight:700;text-transform:none;letter-spacing:0" id="photo-label">
-          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          Choisir une photo
-        </label>
-        <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhoto(this)">
-      </div>
-      <div class="r3">
-        <div><label>Temps (min)</label><input type="number" id="rt" placeholder="30"></div>
-        <div><label>Personnes</label><input type="number" id="rs" placeholder="4"></div>
-        <div><label>Prix moy. (€)</label><input type="number" id="rp" placeholder="12" step="0.5"></div>
-      </div>
-      <div class="fg"><label>Catégorie</label>
-        <select id="rc">
-          <option value="plat">Plat</option>
-          <option value="entree">Entrée</option>
-          <option value="dessert">Dessert</option>
-          <option value="pdej">Petit-déj</option>
-          <option value="snack">Snack</option>
-        </select>
-      </div>
-      <div class="fg"><label>Régime</label>
-        <select id="rg">
-          <option value="normal">Normal</option>
-          <option value="vege">Végétarien</option>
-        </select>
-      </div>
-      <div class="fg">
-        <label>Ingrédients</label>
-        <div class="inglist" id="inglist"></div>
-        <button class="btn-q btn-sm" onclick="addIng()" style="margin-top:4px">+ Ingrédient</button>
-      </div>
-      <div class="fg"><label>Instructions</label><textarea id="ri" placeholder="Étapes…"></textarea></div>
-      <button class="btn btn-r btn-full" onclick="saveRecipe()">Enregistrer la recette</button>
-    </div>
+.cook-progress-bar { height: 4px; background: var(--bd); margin: 0 20px; border-radius: 999px; }
+.cook-progress-fill { height: 100%; background: var(--r); border-radius: 999px; transition: width .4s ease; }
 
-    <div id="t-url" style="display:none">
-      <span class="aibadge">✨ Extraction IA</span>
-      <p style="font-size:13px;color:var(--tm);font-weight:700;margin-bottom:14px;line-height:1.6">Collez un lien (Marmiton, 750g, blog…) — l'IA extrait tout automatiquement.</p>
-      <div style="display:flex;gap:8px;margin-bottom:4px">
-        <input type="url" id="rurl" placeholder="https://…" style="flex:1">
-        <button class="btn btn-r" onclick="importUrl()">Extraire</button>
-      </div>
-      <div class="spinwrap" id="spin"><div class="spin"></div>Lecture en cours…</div>
-      <div id="uprev" style="display:none">
-        <div class="prev">
-          <strong id="pname"></strong>
-          <em id="pinfo"></em>
-          <small id="pings"></small>
-        </div>
-        <button class="btn btn-r btn-full" onclick="confirmUrl()">Ajouter cette recette</button>
-      </div>
-    </div>
-  </div>
-</div>
+.cook-dots { display: flex; justify-content: center; gap: 6px; padding: 14px 20px; flex-wrap: wrap; }
+.cook-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--bd); transition: all .2s; }
+.cook-dot.on   { background: var(--tx); transform: scale(1.3); }
+.cook-dot.done { background: var(--r); }
 
-<!-- SHEET : CHOIX RECETTE (planning) -->
-<div class="ov" id="ov-plan">
-  <div class="sheet">
-    <div class="drag"></div>
-    <div class="shd">
-      <h3 id="plantitle">Ajouter un repas</h3>
-      <button class="xbtn" onclick="closeOv('ov-plan')">×</button>
-    </div>
-    <div class="searchbar" style="margin-bottom:12px">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="Cherche une recette…" oninput="renderPicklist(this.value)">
-    </div>
-    <div class="picklist" id="picklist"></div>
-  </div>
-</div>
+.cook-step-wrap {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 20px 28px; text-align: center;
+}
+.cook-step-text {
+  font-size: 22px; font-weight: 800; line-height: 1.5; color: var(--tx);
+}
 
-<!-- SHEET : DETAIL RECETTE -->
-<div class="ov" id="ov-det">
-  <div class="sheet">
-    <div class="drag"></div>
-    <div class="shd">
-      <h3 id="dettitle"></h3>
-      <button class="xbtn" onclick="closeOv('ov-det')">×</button>
-    </div>
-    <div id="detbody"></div>
-  </div>
-</div>
-
-<!-- PAGE MODE CUISSON -->
-<div class="pg" id="pg-cooking">
-  <div class="cook-wrap" ontouchstart="cookTouchStart(event)" ontouchend="cookTouchEnd(event)">
-
-    <!-- HEADER -->
-    <div class="cook-header">
-      <button class="cook-close" onclick="closeCooking()">
-        <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-      <span class="cook-num" id="cook-num">Étape 1 / 1</span>
-      <div style="width:36px"></div>
-    </div>
-
-    <!-- BARRE PROGRESSION -->
-    <div class="cook-progress-bar">
-      <div class="cook-progress-fill" id="cook-progress"></div>
-    </div>
-
-    <!-- DOTS -->
-    <div class="cook-dots" id="cook-dots"></div>
-
-    <!-- ÉTAPE -->
-    <div class="cook-step-wrap">
-      <div class="cook-step-text" id="cook-text"></div>
-    </div>
-
-    <!-- NAVIGATION -->
-    <div class="cook-nav">
-      <button class="cook-nav-btn" id="cook-prev" onclick="cookPrev()">‹ Précédent</button>
-      <button class="cook-nav-btn cook-nav-next" id="cook-next" onclick="cookNext()">Suivant ›</button>
-    </div>
-
-  </div>
-</div>
-
-<!-- PAGE FICHE RECETTE -->
-<div class="pg" id="pg-fiche">
-  <div id="fiche-content"></div>
-</div>
-
-<!-- SHEET : CATÉGORIE ARTICLE -->
-<div class="ov" id="ov-catpicker">
-  <div class="sheet">
-    <div class="drag"></div>
-    <div class="shd">
-      <h3 id="catpicker-title">Changer de catégorie</h3>
-      <button class="xbtn" onclick="closeOv('ov-catpicker')">×</button>
-    </div>
-    <div id="catpicker-list" style="display:flex;flex-direction:column;gap:4px"></div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script src="js/core.js"></script>
-<script src="js/recipes-ui.js"></script>
-<script src="js/recipes-form.js"></script>
-<script src="js/planning.js"></script>
-<script src="js/shopping.js"></script>
-<script src="js/frigo.js"></script>
-<script src="js/cooking.js"></script>
-<script>renderRecipes(); renderCal();</script>
-</body>
-</html>
+/* ── NAVIGATION ── */
+.cook-nav { display: flex; gap: 12px; padding: 0 20px 40px; }
+.cook-nav-btn {
+  flex: 1; padding: 14px; border-radius: 14px;
+  border: 2px solid var(--bd); background: var(--w); color: var(--tx);
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  cursor: pointer; transition: all .15s;
+}
+.cook-nav-btn:hover { border-color: var(--r); }
+.cook-nav-btn:disabled { opacity: .3; cursor: default; }
+.cook-nav-next { background: var(--r); color: #fff; border-color: var(--r); }
+.cook-nav-next:hover { background: #c83310; border-color: #c83310; }
+.fiche-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
