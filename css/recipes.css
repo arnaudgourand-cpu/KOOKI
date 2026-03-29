@@ -35,8 +35,12 @@
 .rtopbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .rtopbar span { font-size: 13px; font-weight: 800; color: var(--tm); }
 
-/* ── GRILLE 2 COLONNES ── */
+/* ── GRILLE 2 COLONNES (mobile) ── */
 .rgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+@media (min-width: 768px) {
+  .rgrid { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+}
 
 /* ── CARTE AJOUT ── */
 .add-card {
