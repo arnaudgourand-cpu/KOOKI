@@ -289,7 +289,41 @@
         <svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
       <span class="cook-num" id="cook-num">Étape 1 / 1</span>
-      <div style="width:36px"></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="cook-timer-badge" id="cook-timer-badge" style="display:none"></span>
+        <button class="cook-close" onclick="toggleTimerPanel()">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- PANEL MINUTEUR -->
+    <div class="cook-timer-panel" id="cook-timer-panel" style="display:none">
+      <div class="cook-timer-tabs">
+        <button class="cook-ttab on" onclick="setTimerMode('timer',this)">Minuteur</button>
+        <button class="cook-ttab" onclick="setTimerMode('chrono',this)">Chronomètre</button>
+      </div>
+      <!-- MODE MINUTEUR -->
+      <div id="ct-timer">
+        <div class="cook-timer-display" id="cook-timer-display">00:00</div>
+        <div class="cook-timer-controls">
+          <button class="cook-time-btn" onclick="addTime(-60)">−1min</button>
+          <button class="cook-time-btn" onclick="addTime(-10)">−10s</button>
+          <button class="cook-timer-main-btn" id="cook-timer-btn" onclick="toggleTimer()">▶ Démarrer</button>
+          <button class="cook-time-btn" onclick="addTime(10)">+10s</button>
+          <button class="cook-time-btn" onclick="addTime(60)">+1min</button>
+        </div>
+        <button class="cook-reset-btn" onclick="stopTimer()">Réinitialiser</button>
+      </div>
+      <!-- MODE CHRONO -->
+      <div id="ct-chrono" style="display:none">
+        <div class="cook-timer-display" id="cook-chrono-display">00:00</div>
+        <div style="display:flex;justify-content:center;gap:12px">
+          <button class="cook-timer-main-btn" id="cook-chrono-btn" onclick="toggleChrono()">▶ Démarrer</button>
+          <button class="cook-time-btn" onclick="resetChrono()">↺ Reset</button>
+        </div>
+      </div>
+      <button class="cook-panel-close" onclick="toggleTimerPanel()">Fermer ×</button>
     </div>
 
     <!-- BARRE PROGRESSION -->
