@@ -308,14 +308,25 @@
       <!-- MODE MINUTEUR -->
       <div id="ct-timer">
         <div class="cook-timer-display" id="cook-timer-display">00:00</div>
-        <div class="cook-timer-controls">
-          <button class="cook-time-btn" onclick="addTime(-60)">−1min</button>
-          <button class="cook-time-btn" onclick="addTime(-10)">−10s</button>
-          <button class="cook-timer-main-btn" id="cook-timer-btn" onclick="toggleTimer()">▶ Démarrer</button>
-          <button class="cook-time-btn" onclick="addTime(10)">+10s</button>
-          <button class="cook-time-btn" onclick="addTime(60)">+1min</button>
+        <div class="cook-time-picker">
+          <div class="cook-time-col">
+            <button class="cook-pick-arrow" onclick="addTimePart('min',1)">▲</button>
+            <input class="cook-pick-input" id="pick-min" type="number" min="0" max="99" value="0" oninput="syncTimerFromPicker()">
+            <button class="cook-pick-arrow" onclick="addTimePart('min',-1)">▼</button>
+            <span class="cook-pick-label">min</span>
+          </div>
+          <span class="cook-pick-sep">:</span>
+          <div class="cook-time-col">
+            <button class="cook-pick-arrow" onclick="addTimePart('sec',10)">▲</button>
+            <input class="cook-pick-input" id="pick-sec" type="number" min="0" max="59" value="0" oninput="syncTimerFromPicker()">
+            <button class="cook-pick-arrow" onclick="addTimePart('sec',-10)">▼</button>
+            <span class="cook-pick-label">sec</span>
+          </div>
         </div>
-        <button class="cook-reset-btn" onclick="stopTimer()">Réinitialiser</button>
+        <div style="display:flex;justify-content:center;gap:10px;margin-top:12px">
+          <button class="cook-timer-main-btn" id="cook-timer-btn" onclick="toggleTimer()">▶ Démarrer</button>
+          <button class="cook-reset-btn" style="text-decoration:none;padding:10px 16px;border:2px solid var(--bd);border-radius:999px" onclick="stopTimer()">↺ Reset</button>
+        </div>
       </div>
       <!-- MODE CHRONO -->
       <div id="ct-chrono" style="display:none">
