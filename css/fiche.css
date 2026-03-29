@@ -134,10 +134,27 @@
 }
 
 /* ── PANEL MINUTEUR ── */
+.cook-timer-wrap {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--w); border-radius: 999px;
+  border: 2px solid var(--bd); padding: 4px 4px 4px 4px;
+  transition: border-color .3s, padding .3s; overflow: hidden;
+  max-width: 40px; transition: max-width .35s ease, border-color .3s, padding .3s;
+}
+.cook-timer-wrap.active { max-width: 130px; border-color: var(--r); padding: 4px 12px 4px 4px; }
 .cook-timer-badge {
   font-size: 13px; font-weight: 900; color: var(--r);
-  background: var(--rl); padding: 4px 10px; border-radius: 999px;
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+  opacity: 0; max-width: 0; overflow: hidden; transition: opacity .3s, max-width .35s ease;
+}
+.cook-timer-wrap.active .cook-timer-badge { opacity: 1; max-width: 80px; }
+.cook-timer-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: none; background: none; flex-shrink: 0;
+  color: var(--tm); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: color .2s;
+}
+.cook-timer-wrap.active .cook-timer-icon { color: var(--r); }
 }
 .cook-timer-panel {
   background: var(--w); border-radius: 20px;
