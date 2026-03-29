@@ -97,6 +97,8 @@
 .btn-cook:hover { border-color: var(--r); color: var(--r); }
 
 /* ── MODE CUISSON PLEIN ÉCRAN ── */
+.pg#pg-cooking { padding-top: 0; }
+
 .cook-wrap {
   min-height: 100vh; display: flex; flex-direction: column;
   background: var(--c); color: var(--tx); padding: 0;
