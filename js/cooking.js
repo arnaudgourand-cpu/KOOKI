@@ -135,15 +135,17 @@ function renderChronoDisplay() {
 /* ── BADGE ── */
 function updateBadge() {
   const badge = document.getElementById('cook-timer-badge');
-  if (!badge) return;
+  const wrap  = document.getElementById('cook-timer-wrap');
+  if (!badge || !wrap) return;
   const active = cookTimerInt || cookChronoInt;
   const val = timerMode === 'timer' ? cookTimer : cookChrono;
   if (active && val > 0) {
     const m = Math.floor(val/60), s = val%60;
     badge.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    badge.style.display = 'inline-block';
+    wrap.classList.add('active');
   } else {
-    badge.style.display = 'none';
+    badge.textContent = '';
+    wrap.classList.remove('active');
   }
 }
 
