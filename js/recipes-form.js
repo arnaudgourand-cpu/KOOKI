@@ -1,3 +1,17 @@
+/* ══ GÉNÉRATION IMAGE ══ */
+function openGeminiImage() {
+  const name = document.getElementById('rn').value.trim();
+  const prompt = name
+    ? `Crée une belle photo réaliste d'un plat de cuisine : ${name}. Style photo culinaire professionnelle, vue du dessus, sur une belle assiette.`
+    : `Crée une belle photo réaliste d'un plat de cuisine. Style photo culinaire professionnelle.`;
+  const url = `https://gemini.google.com/app?hl=fr`;
+  window.open(url, '_blank');
+  setTimeout(() => {
+    navigator.clipboard.writeText(prompt).catch(() => {});
+    toast('Prompt copié ! Collez-le dans Gemini');
+  }, 500);
+}
+
 /* ══ PHOTO ══ */
 function handlePhoto(input) {
   const file = input.files[0]; if (!file) return;
