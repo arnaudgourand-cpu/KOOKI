@@ -44,8 +44,8 @@ function renderShop() {
 
   const secs = {};
   items.forEach(item => {
-    let cat = item.manual ? 'Ajoutés manuellement' : 'Autre';
-    if (!item.manual) {
+    let cat = item.manual ? 'Ajoutés manuellement' : (CAT_OVERRIDE[item.name.toLowerCase()] || 'Autre');
+    if (!item.manual && !CAT_OVERRIDE[item.name.toLowerCase()]) {
       for (const [c,kws] of Object.entries(FOODS)) {
         if (kws.some(k => item.name.toLowerCase().includes(k))) { cat=c; break; }
       }
@@ -71,13 +71,39 @@ function renderShop() {
         return `<div class="sitem${done?' done':''}" onclick="togChk('${ck}',this)">
           <div class="schk">${done?'✓':''}</div>
           <div class="sname">${item.name}</div>
-          ${item.qtys.length?`<div class="sqty">${item.qtys.join(' + ')}</div>`:''}
+          <div style="display:flex;align-items:center;gap:6px">
+            ${item.qtys.length?`<div class="sqty">${item.qtys.join(' + ')}</div>`:''}
+            <button class="scat-btn" onclick="event.stopPropagation();openCatPicker('${item.name.replace(/'/g,"\\'")}')">
+              <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
+          </div>
         </div>`;
       }).join('')}
     </div>`;
   });
   h += `</div>`;
   document.getElementById('scontent').innerHTML = h;
+}
+
+/* ══ CHANGEMENT DE CATÉGORIE ══ */
+const CATS_SHOP = ['Légumes','Fruits','Viandes & Poissons','Produits laitiers','Féculents','Épicerie','Autre'];
+
+function openCatPicker(itemName) {
+  const current = CAT_OVERRIDE[itemName.toLowerCase()] || 'Autre';
+  const opts = CATS_SHOP.map(c =>
+    `<button class="pickitem${c===current?' active':''}" onclick="setCatOverride('${itemName.replace(/'/g,"\\'")}','${c}')" style="padding:12px 16px;text-align:left">
+      ${SICO[c]||'📦'} ${c}${c===current?' ✓':''}
+    </button>`
+  ).join('');
+  document.getElementById('catpicker-title').textContent = itemName;
+  document.getElementById('catpicker-list').innerHTML = opts;
+  openOv('ov-catpicker');
+}
+
+function setCatOverride(itemName, cat) {
+  CAT_OVERRIDE[itemName.toLowerCase()] = cat;
+  sv(); closeOv('ov-catpicker'); renderShop();
+  toast('Catégorie mise à jour !');
 }
 
 function togChk(key, el) {
