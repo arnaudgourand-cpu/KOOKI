@@ -201,6 +201,10 @@
           Choisir une photo
         </label>
         <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhoto(this)">
+        <button type="button" onclick="openGeminiImage()" style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:10px 14px;border:2px solid var(--bd);border-radius:12px;cursor:pointer;color:var(--tm);font-size:13px;font-weight:700;background:var(--w);width:100%;font-family:'Nunito',sans-serif;transition:all .2s" onmouseover="this.style.borderColor='#4285f4';this.style.color='#4285f4'" onmouseout="this.style.borderColor='var(--bd)';this.style.color='var(--tm)'">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+          Générer une image avec Gemini
+        </button>
       </div>
       <div class="r3">
         <div><label>Temps (min)</label><input type="number" id="rt" placeholder="30"></div>
