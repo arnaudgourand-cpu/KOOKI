@@ -137,9 +137,9 @@
 .cook-timer-wrap {
   display: flex; align-items: center; gap: 6px;
   background: var(--w); border-radius: 999px;
-  border: 2px solid var(--bd); padding: 4px 4px 4px 4px;
-  transition: border-color .3s, padding .3s; overflow: hidden;
-  max-width: 40px; transition: max-width .35s ease, border-color .3s, padding .3s;
+  border: 2px solid var(--bd); padding: 4px;
+  transition: max-width .35s ease, border-color .3s, padding .3s;
+  overflow: hidden; max-width: 40px;
 }
 .cook-timer-wrap.active { max-width: 130px; border-color: var(--r); padding: 4px 12px 4px 4px; }
 .cook-timer-badge {
@@ -149,7 +149,7 @@
 }
 .cook-timer-wrap.active .cook-timer-badge { opacity: 1; max-width: 80px; }
 .cook-timer-icon {
-  width: 28px; height: 28px; border-radius: 50%;
+  width: 30px; height: 30px; border-radius: 50%;
   border: none; background: none; flex-shrink: 0;
   color: var(--tm); cursor: pointer;
   display: flex; align-items: center; justify-content: center; transition: color .2s;
@@ -175,6 +175,22 @@
 }
 .cook-timer-display.urgent { color: var(--r); animation: pulse .5s ease infinite alternate; }
 @keyframes pulse { from { opacity:1; } to { opacity:.4; } }
+
+.cook-time-picker { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px; }
+.cook-time-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.cook-pick-arrow { background: none; border: none; color: var(--tm); font-size: 14px; cursor: pointer; padding: 2px 8px; line-height: 1; }
+.cook-pick-arrow:hover { color: var(--r); }
+.cook-pick-input {
+  width: 64px; height: 52px; text-align: center; border-radius: 12px;
+  border: 2px solid var(--bd); background: var(--c);
+  font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900;
+  color: var(--tx); outline: none; -moz-appearance: textfield;
+}
+.cook-pick-input::-webkit-outer-spin-button,
+.cook-pick-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.cook-pick-input:focus { border-color: var(--r); }
+.cook-pick-sep { font-size: 28px; font-weight: 900; color: var(--tx); margin-bottom: 20px; }
+.cook-pick-label { font-size: 11px; font-weight: 800; color: var(--tl); text-transform: uppercase; letter-spacing: .5px; }
 
 .cook-timer-controls { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:10px; }
 .cook-time-btn { padding:7px 11px; border-radius:999px; border:2px solid var(--bd); background:var(--w); color:var(--tx); font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; cursor:pointer; }
