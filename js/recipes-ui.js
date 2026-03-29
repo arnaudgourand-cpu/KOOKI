@@ -163,6 +163,10 @@ function renderFiche() {
           : `<p style="color:var(--tl);font-weight:700;padding:20px 0">Aucune instruction renseignée.</p>`}
       </div>
       <div class="fiche-actions">
+        <button class="btn btn-cook" onclick="openCooking(${ficheRecipeIdx})">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2a10 10 0 0 1 10 10"/><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+          Mode cuisson
+        </button>
         <button class="btn btn-r btn-full" onclick="showPg('planning',document.getElementById('ni-planning'))">+ Ajouter au planning</button>
         ${r.url?`<a href="${r.url}" target="_blank" class="btn btn-w btn-full">Voir la recette originale</a>`:''}
       </div>
