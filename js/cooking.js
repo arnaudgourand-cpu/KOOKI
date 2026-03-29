@@ -93,13 +93,34 @@ function toggleTimer() {
 
 function stopTimer() {
   clearInterval(cookTimerInt); cookTimerInt = null; cookTimer = 0;
-  renderTimerDisplay();
-  updateBadge();
+  renderTimerDisplay(); syncPickerFromTimer(); updateBadge();
   const btn = document.getElementById('cook-timer-btn');
   if (btn) btn.textContent = '▶ Démarrer';
 }
 
-function addTime(secs) { cookTimer = Math.max(0, cookTimer + secs); renderTimerDisplay(); updateBadge(); }
+function addTimePart(part, val) {
+  const minEl = document.getElementById('pick-min');
+  const secEl = document.getElementById('pick-sec');
+  if (part === 'min') minEl.value = Math.max(0, Math.min(99, parseInt(minEl.value||0) + val));
+  if (part === 'sec') secEl.value = Math.max(0, Math.min(59, parseInt(secEl.value||0) + val));
+  syncTimerFromPicker();
+}
+
+function syncTimerFromPicker() {
+  const m = parseInt(document.getElementById('pick-min')?.value||0);
+  const s = parseInt(document.getElementById('pick-sec')?.value||0);
+  cookTimer = m * 60 + s;
+  renderTimerDisplay();
+}
+
+function syncPickerFromTimer() {
+  const minEl = document.getElementById('pick-min');
+  const secEl = document.getElementById('pick-sec');
+  if (minEl) minEl.value = Math.floor(cookTimer / 60);
+  if (secEl) secEl.value = cookTimer % 60;
+}
+
+
 
 function renderTimerDisplay() {
   const el = document.getElementById('cook-timer-display');
