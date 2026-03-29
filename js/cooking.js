@@ -21,6 +21,8 @@ function openCooking(recipeIdx) {
   document.getElementById('cook-timer-panel').style.display = 'none';
   renderCooking();
   requestWakeLock();
+  document.querySelector('.topbar').style.display = 'none';
+  document.querySelector('.bnav').style.display   = 'none';
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
   document.getElementById('pg-cooking').classList.add('on');
   window.scrollTo(0, 0);
@@ -29,6 +31,8 @@ function openCooking(recipeIdx) {
 function closeCooking() {
   stopTimer(); resetChrono();
   releaseWakeLock();
+  document.querySelector('.topbar').style.display = '';
+  document.querySelector('.bnav').style.display   = '';
   showPg('recipes', document.getElementById('ni-recipes'));
 }
 
