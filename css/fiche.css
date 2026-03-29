@@ -86,5 +86,93 @@
 .portions-btn:hover { border-color: var(--r); color: var(--r); }
 .portions-val { font-size: 18px; font-weight: 900; color: var(--tx); min-width: 24px; text-align: center; }
 
-/* ── BOUTONS BAS ── */
+/* ── BOUTON MODE CUISSON ── */
+.btn-cook {
+  width: 100%; padding: 14px; border-radius: 14px;
+  border: none; background: var(--tx); color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  gap: 8px; transition: opacity .2s;
+}
+.btn-cook:hover { opacity: .85; }
+
+/* ── MODE CUISSON PLEIN ÉCRAN ── */
+.cook-wrap {
+  min-height: 100vh; display: flex; flex-direction: column;
+  background: var(--tx); color: #fff; padding: 0;
+  user-select: none;
+}
+
+.cook-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 20px 12px;
+}
+.cook-close {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,.12); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.cook-num { font-size: 14px; font-weight: 800; opacity: .7; }
+
+.cook-progress-bar { height: 3px; background: rgba(255,255,255,.15); margin: 0 20px; border-radius: 999px; }
+.cook-progress-fill { height: 100%; background: var(--r); border-radius: 999px; transition: width .4s ease; }
+
+.cook-dots { display: flex; justify-content: center; gap: 6px; padding: 14px 20px; flex-wrap: wrap; }
+.cook-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.2); transition: all .2s; }
+.cook-dot.on   { background: #fff; transform: scale(1.3); }
+.cook-dot.done { background: var(--r); }
+
+.cook-step-wrap {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 20px 28px; text-align: center;
+}
+.cook-step-text {
+  font-size: 22px; font-weight: 800; line-height: 1.5;
+  color: #fff;
+}
+
+/* ── MINUTEUR ── */
+.cook-timer { padding: 0 20px 20px; }
+.cook-timer-display {
+  font-size: 56px; font-weight: 900; text-align: center;
+  font-variant-numeric: tabular-nums; letter-spacing: -2px;
+  margin-bottom: 12px; transition: color .3s;
+}
+.cook-timer-display.urgent { color: var(--r); animation: pulse .5s ease infinite alternate; }
+@keyframes pulse { from { opacity: 1; } to { opacity: .5; } }
+
+.cook-timer-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+.cook-time-btn {
+  padding: 8px 12px; border-radius: 999px; border: none;
+  background: rgba(255,255,255,.12); color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800;
+  cursor: pointer; transition: background .15s;
+}
+.cook-time-btn:hover { background: rgba(255,255,255,.22); }
+.cook-timer-btn {
+  padding: 10px 20px; border-radius: 999px; border: none;
+  background: var(--r); color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900;
+  cursor: pointer; transition: opacity .15s;
+}
+.cook-timer-btn:hover { opacity: .85; }
+.cook-reset-btn {
+  display: block; margin: 0 auto;
+  background: none; border: none; color: rgba(255,255,255,.4);
+  font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700;
+  cursor: pointer; text-decoration: underline;
+}
+
+/* ── NAVIGATION ── */
+.cook-nav { display: flex; gap: 12px; padding: 0 20px 40px; }
+.cook-nav-btn {
+  flex: 1; padding: 14px; border-radius: 14px; border: none;
+  background: rgba(255,255,255,.12); color: #fff;
+  font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900;
+  cursor: pointer; transition: background .15s;
+}
+.cook-nav-btn:hover { background: rgba(255,255,255,.22); }
+.cook-nav-btn:disabled { opacity: .3; cursor: default; }
+.cook-nav-next { background: var(--r); }
+.cook-nav-next:hover { background: #c83310; }
 .fiche-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
