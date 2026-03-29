@@ -47,7 +47,7 @@ function renderRecipes() {
     ? `${filtered.length} résultat${filtered.length>1?'s':''}`
     : `${n} recette${n>1?'s':''}`;
 
-  let h = (!q && activeFilter === 'all' && !showFavOnly) ? `<div class="add-card" onclick="openAdd()">
+  let h = (!q && activeFilter === 'all' && !showFavOnly && R.length === 0) ? `<div class="add-card" onclick="openAdd()">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
     <span>Ajouter une recette</span>
   </div>` : '';
