@@ -46,7 +46,7 @@
   color: var(--tl); cursor: pointer; border-bottom: 3px solid transparent;
   margin-bottom: -2px; transition: all .2s;
 }
-.fiche-tab.on { color: var(--tx); border-bottom-color: var(--tx); }
+.fiche-tab.on { color: #2EAA6A; border-bottom-color: #2EAA6A; }
 .fiche-tab svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── PANNEAUX ── */
@@ -61,17 +61,17 @@
 .fiche-ing:last-child { border-bottom: none; }
 .fiche-ing-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--r); flex-shrink: 0;
+  background: #2EAA6A; flex-shrink: 0;
 }
 .fiche-ing-name { flex: 1; font-size: 15px; font-weight: 700; color: var(--tx); }
-.fiche-ing-qty  { font-size: 14px; font-weight: 800; color: var(--r); }
+.fiche-ing-qty  { font-size: 14px; font-weight: 800; color: #2EAA6A; }
 
 /* ── ÉTAPES ── */
 .fiche-steps { display: flex; flex-direction: column; gap: 18px; }
 .fiche-step  { display: flex; gap: 14px; align-items: flex-start; }
 .fiche-step-num {
   width: 32px; height: 32px; border-radius: 50%;
-  background: var(--r); color: #fff;
+  background: #2EAA6A; color: #fff;
   font-size: 14px; font-weight: 900;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 2px;
@@ -80,11 +80,11 @@
 
 /* ── PORTIONS ── */
 .portions-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 2px solid var(--bd); margin-bottom: 20px; }
-.portions-label { font-size: 15px; font-weight: 900; color: var(--tx); }
+.portions-label { font-size: 15px; font-weight: 900; color: #2EAA6A; }
 .portions-ctrl { display: flex; align-items: center; gap: 16px; }
 .portions-btn { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--bd); background: var(--w); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--tx); transition: all .15s; line-height: 1; }
-.portions-btn:hover { border-color: var(--r); color: var(--r); }
-.portions-val { font-size: 18px; font-weight: 900; color: var(--tx); min-width: 24px; text-align: center; }
+.portions-btn:hover { border-color: #2EAA6A; color: #2EAA6A; }
+.portions-val { font-size: 18px; font-weight: 900; color: #2EAA6A; min-width: 24px; text-align: center; }
 
 /* ── BOUTON MODE CUISSON ── */
 .btn-cook {
