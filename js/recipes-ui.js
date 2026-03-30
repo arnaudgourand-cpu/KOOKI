@@ -73,7 +73,7 @@ function renderRecipes() {
     </div>`;
   });
 
-  if (!filtered.length) h += `<div class="empty" style="grid-column:1/-1"><span class="empty-ico">🔍</span><h3>Aucun résultat</h3><p>Essayez un autre filtre</p></div>`;
+  if (!filtered.length) h += `<div class="empty" style="grid-column:1/-1"><span class="empty-ico"><svg viewBox="0 0 24 24" style="width:48px;height:48px;stroke:var(--bd);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span><h3>Aucun résultat</h3><p>Essayez un autre filtre</p></div>`;
   document.getElementById('rgrid').innerHTML = h;
 }
 
