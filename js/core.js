@@ -2,6 +2,7 @@
 const MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 const JOURS  = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
 const CATS   = { plat:'Plat', entree:'Entrée', dessert:'Dessert', smoothie:'Jus & Smoothie', snack:'Snack' };
+const SUBCATS = { viande:'Viandes', poisson:'Poisson', legume:'Légumes', sandwich:'Sandwich', soupe:'Soupe' };
 const FOODS = {
   'Primeur - Légumes':    ['carotte','courgette','tomate','oignon','ail','salade','épinard','poivron','champignon','pomme de terre','brocoli','chou','poireau','aubergine','concombre','céleri','radis','navet','artichaut','fenouil','maïs','haricot vert','petits pois','asperge','courge'],
   'Primeur - Fruits':     ['pomme','poire','banane','orange','citron','fraise','framboise','raisin','pêche','abricot','mangue','ananas','kiwi','pastèque','melon','cerise','prune','figue','grenade','myrtille'],
