@@ -19,13 +19,23 @@ async function initAuth() {
     renderAuthUI();
     if (currentUser) {
       loadRecipesFromSupabase();
+      loadPlanningFromSupabase();
+      loadShoppingFromSupabase();
     } else {
       R = [];
+      P = {};
+      CK = {};
+      manualItems = [];
+      CAT_OVERRIDE = {};
       renderRecipes();
     }
   });
 
-  if (currentUser) await loadRecipesFromSupabase();
+  if (currentUser) {
+    await loadRecipesFromSupabase();
+    await loadPlanningFromSupabase();
+    await loadShoppingFromSupabase();
+  }
 }
 
 /* ══ LOGIN EMAIL ══ */
@@ -109,6 +119,46 @@ async function deleteRecipeFromSupabase(supabaseId) {
 async function toggleFavInSupabase(supabaseId, favValue) {
   if (!currentUser || !supabaseId) return;
   await db.from('recipes').update({ is_favorite: favValue }).eq('id', supabaseId);
+}
+
+/* ══ SUPABASE PLANNING ══ */
+async function loadPlanningFromSupabase() {
+  if (!currentUser) return;
+  const { data, error } = await db.from('planning').select('*').eq('user_id', currentUser.id).single();
+  if (error && error.code !== 'PGRST116') return;
+  if (data) { P = data.data || {}; }
+}
+
+async function savePlanningToSupabase() {
+  if (!currentUser) return;
+  const { data: existing } = await db.from('planning').select('id').eq('user_id', currentUser.id).single();
+  if (existing) {
+    await db.from('planning').update({ data: P, updated_at: new Date().toISOString() }).eq('user_id', currentUser.id);
+  } else {
+    await db.from('planning').insert([{ user_id: currentUser.id, data: P }]);
+  }
+}
+
+/* ══ SUPABASE SHOPPING ══ */
+async function loadShoppingFromSupabase() {
+  if (!currentUser) return;
+  const { data, error } = await db.from('shopping').select('*').eq('user_id', currentUser.id).single();
+  if (error && error.code !== 'PGRST116') return;
+  if (data) {
+    CK = data.checked || {};
+    manualItems = data.manual || [];
+    CAT_OVERRIDE = data.cat_overrides || {};
+  }
+}
+
+async function saveShoppingToSupabase() {
+  if (!currentUser) return;
+  const { data: existing } = await db.from('shopping').select('id').eq('user_id', currentUser.id).single();
+  if (existing) {
+    await db.from('shopping').update({ checked: CK, manual: manualItems, cat_overrides: CAT_OVERRIDE, updated_at: new Date().toISOString() }).eq('user_id', currentUser.id);
+  } else {
+    await db.from('shopping').insert([{ user_id: currentUser.id, checked: CK, manual: manualItems, cat_overrides: CAT_OVERRIDE }]);
+  }
 }
 
 /* ══ CONVERTISSEURS ══ */
