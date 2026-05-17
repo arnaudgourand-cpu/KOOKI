@@ -100,52 +100,64 @@ function openCatPicker(itemName) {
   openOv('ov-catpicker');
 }
 
-function setCatOverride(itemName, cat) {
+async function setCatOverride(itemName, cat) {
   CAT_OVERRIDE[itemName.toLowerCase()] = cat;
-  sv(); closeOv('ov-catpicker'); renderShop();
+  sv();
+  await saveShoppingToSupabase();
+  closeOv('ov-catpicker'); renderShop();
   toast('Catégorie mise à jour !');
 }
 
-function togChk(key, el) {
+async function togChk(key, el) {
   if (CK[key]) { delete CK[key]; el.classList.remove('done'); el.querySelector('.schk').textContent=''; }
   else         { CK[key]=true;   el.classList.add('done');    el.querySelector('.schk').textContent='✓'; }
   sv();
+  await saveShoppingToSupabase();
 }
 
-function uncheckAll() {
+async function uncheckAll() {
   const p = document.getElementById('speriod').value;
   Object.keys(CK).forEach(k => { if (k.startsWith(p)) delete CK[k]; });
-  sv(); renderShop();
+  sv();
+  await saveShoppingToSupabase();
+  renderShop();
 }
 
 /* ══ ARTICLES MANUELS ══ */
-let manualItems = JSON.parse(localStorage.getItem('kk-manual') || '[]');
+let manualItems = [];
 
-function saveManual() { localStorage.setItem('kk-manual', JSON.stringify(manualItems)); }
+async function saveManual() {
+  sv();
+  await saveShoppingToSupabase();
+}
 
-function addManualItem() {
+async function addManualItem() {
   const input = document.getElementById('manual-input');
   const val = input.value.trim();
   if (!val) return;
   manualItems.push({ name: val, done: false });
-  saveManual(); input.value = '';
+  await saveManual();
+  input.value = '';
   renderShop();
 }
 
-function toggleManualItem(i) {
+async function toggleManualItem(i) {
   manualItems[i].done = !manualItems[i].done;
-  saveManual(); renderShop();
+  await saveManual();
+  renderShop();
 }
 
-function delManualItem(i) {
+async function delManualItem(i) {
   manualItems.splice(i, 1);
-  saveManual(); renderShop();
+  await saveManual();
+  renderShop();
 }
 
-function clearAllManual() {
+async function clearAllManual() {
   if (!manualItems.length) return;
   manualItems = [];
-  saveManual(); renderShop();
+  await saveManual();
+  renderShop();
 }
 
 function initManual() { renderShop(); }
