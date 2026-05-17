@@ -75,10 +75,7 @@ function renderAuthUI() {
   if (!btn) return;
   if (currentUser) {
     const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Moi';
-    const avatar = currentUser.user_metadata?.avatar_url;
-    btn.innerHTML = avatar
-      ? `<img src="${avatar}" style="width:28px;height:28px;border-radius:50%;object-fit:cover"> <span>${name}</span>`
-      : `<svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span>${name}</span>`;
+    btn.innerHTML = `<div style="width:28px;height:28px;border-radius:50%;background:#4285f4;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff">${name[0].toUpperCase()}</div>`;
     btn.onclick = () => openOv('ov-profile');
   } else {
     btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> <span>Connexion</span>`;
