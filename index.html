@@ -87,8 +87,6 @@
     </div>
   </div>
   <div id="scontent"></div>
-
-  <!-- ARTICLES MANUELS -->
   <div class="manual-section">
     <div class="manual-title">
       <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -100,8 +98,6 @@
       <button class="btn btn-r btn-sm" onclick="addManualItem()">Ajouter</button>
     </div>
   </div>
-
-  <!-- BOUTON MON FRIGO -->
   <div class="frigo-btn-wrap">
     <button class="frigo-open-btn" onclick="openFrigoPage()">
       <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="8" y1="6" x2="8" y2="8"/><line x1="8" y1="14" x2="8" y2="18"/></svg>
@@ -128,8 +124,6 @@
       Péremptions
     </button>
   </div>
-
-  <!-- ONGLET RECETTES -->
   <div id="ft-search">
     <p style="font-size:13px;color:var(--tl);font-weight:700;margin-bottom:12px">Ajoutez vos ingrédients disponibles — je trouve les recettes qui correspondent.</p>
     <div class="frigo-input-row">
@@ -139,8 +133,6 @@
     <div class="frigo-tags" id="frigo-tags"></div>
     <div id="frigo-results"></div>
   </div>
-
-  <!-- ONGLET PÉREMPTIONS -->
   <div id="ft-expiry" style="display:none">
     <div class="frigo-input-row" style="flex-wrap:wrap;gap:8px;margin-bottom:16px">
       <input type="text" id="exp-name" placeholder="Nom de l'aliment" style="flex:2;min-width:120px">
@@ -189,7 +181,6 @@
         <svg class="tab-ico" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Depuis un lien
       </button>
     </div>
-
     <div id="t-manual">
       <div class="fg"><label>Nom</label><input id="rn" placeholder="ex : Poulet rôti"></div>
       <div class="fg">
@@ -236,7 +227,6 @@
       <div class="fg"><label>Instructions</label><textarea id="ri" placeholder="Étapes…"></textarea></div>
       <button class="btn btn-r btn-full" onclick="saveRecipe()">Enregistrer la recette</button>
     </div>
-
     <div id="t-url" style="display:none">
       <span class="aibadge">✨ Extraction IA</span>
       <p style="font-size:13px;color:var(--tm);font-weight:700;margin-bottom:14px;line-height:1.6">Collez un lien (Marmiton, 750g, blog…) — l'IA extrait tout automatiquement.</p>
@@ -425,46 +415,6 @@
 <script src="js/shopping.js"></script>
 <script src="js/frigo.js"></script>
 <script src="js/cooking.js"></script>
-<script>
-  function switchAuthTab(tab) {
-    const isLogin = tab === 'login';
-    document.getElementById('tab-login').style.background = isLogin ? 'var(--r)' : 'var(--w)';
-    document.getElementById('tab-login').style.color = isLogin ? '#fff' : 'var(--t)';
-    document.getElementById('tab-login').style.borderColor = isLogin ? 'var(--r)' : 'var(--bd)';
-    document.getElementById('tab-signup').style.background = !isLogin ? 'var(--r)' : 'var(--w)';
-    document.getElementById('tab-signup').style.color = !isLogin ? '#fff' : 'var(--t)';
-    document.getElementById('tab-signup').style.borderColor = !isLogin ? 'var(--r)' : 'var(--bd)';
-    document.getElementById('auth-submit-btn').textContent = isLogin ? 'Se connecter' : 'Créer mon compte';
-    document.getElementById('auth-submit-btn').onclick = isLogin ? () => submitAuth('login') : () => submitAuth('signup');
-    window._authTab = tab;
-  }
-  function submitAuth(tab) {
-    const t = tab || window._authTab || 'login';
-    const email = document.getElementById('auth-email').value.trim();
-    const password = document.getElementById('auth-password').value;
-    if (!email || !password) { toast('Remplis tous les champs'); return; }
-    if (t === 'login') loginEmail(email, password);
-    else signupEmail(email, password);
-  }
-  function openOvProfile() {
-    if (!currentUser) return;
-    const name = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'Moi';
-    const avatar = currentUser.user_metadata?.avatar_url;
-    document.getElementById('profile-name').textContent = name;
-    document.getElementById('profile-email').textContent = currentUser.email || '';
-    document.getElementById('profile-avatar').innerHTML = avatar
-      ? `<img src="${avatar}" style="width:72px;height:72px;border-radius:50%;object-fit:cover">`
-      : `<div style="width:72px;height:72px;border-radius:50%;background:var(--r);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;margin:0 auto">${name[0].toUpperCase()}</div>`;
-  }
-  document.getElementById('ov-profile').addEventListener('click', function(e) {
-    if (e.target === this) closeOv('ov-profile');
-  });
-  document.getElementById('auth-btn').addEventListener('click', function() {
-    if (currentUser) { openOvProfile(); openOv('ov-profile'); }
-    else openOv('ov-auth');
-  });
-  window._authTab = 'login';
-  initAuth().then(() => { renderRecipes(); renderCal(); });
-</script>
+<script src="js/auth-ui.js"></script>
 </body>
 </html>
