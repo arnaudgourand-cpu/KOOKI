@@ -28,8 +28,9 @@ function toggleFavFilter(btn) {
   renderRecipes();
 }
 
-function toggleFav(idx) {
+async function toggleFav(idx) {
   R[idx].fav = !R[idx].fav;
+  await toggleFavInSupabase(R[idx]._id, R[idx].fav);
   sv(); renderRecipes();
 }
 
@@ -78,9 +79,12 @@ function renderRecipes() {
 }
 
 /* ══ SUPPRESSION / NAVIGATION ══ */
-function delR(i) {
+async function delR(i) {
   if (!confirm('Supprimer cette recette ?')) return;
-  R.splice(i,1); sv(); renderRecipes(); toast('Recette supprimée');
+  const supabaseId = R[i]._id;
+  R.splice(i,1);
+  await deleteRecipeFromSupabase(supabaseId);
+  sv(); renderRecipes(); toast('Recette supprimée');
 }
 
 function goplan() {
