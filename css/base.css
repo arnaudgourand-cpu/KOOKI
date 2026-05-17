@@ -35,10 +35,15 @@ body {
   height: var(--th);
   background: var(--w);
   border-bottom: 1.5px solid var(--bd);
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
 }
 .logo { font-size: 30px; font-weight: 900; font-style: italic; color: var(--r); letter-spacing: -1px; line-height: 1; user-select: none; }
 .logo b { color: var(--tx); font-style: normal; font-weight: 900; }
+
+/* ── AUTH BTN ── */
+.auth-btn { transition: all .2s; }
+.auth-btn:hover { border-color: var(--r) !important; color: var(--r) !important; }
 
 /* ── BOTTOM NAV ── */
 .bnav {
@@ -124,7 +129,7 @@ body {
   background: var(--r);
   color: #fff;
   padding: 12px 24px;
-  border-radius: var(--pill);
+  border-radius: 999px;
   font-size: 14px;
   font-weight: 800;
   z-index: 999;
