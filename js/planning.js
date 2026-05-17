@@ -97,18 +97,22 @@ function pickPortionChange(ri, dir) {
   el.textContent = val;
 }
 
-function addMeal(ri) {
+async function addMeal(ri) {
   if (!pkey) return;
   if (!P[pkey]) P[pkey] = [];
   const portEl = document.getElementById(`pp-${ri}`);
   const servings = portEl ? parseInt(portEl.textContent) : (parseInt(R[ri].servings) || 4);
   P[pkey].push({ name:R[ri].name, recipeIdx:ri, servings });
-  sv(); closeOv('ov-plan'); renderCal();
+  sv();
+  await savePlanningToSupabase();
+  closeOv('ov-plan'); renderCal();
   toast('Repas planifié !');
 }
 
-function rmMeal(key, idx) {
+async function rmMeal(key, idx) {
   P[key].splice(idx,1);
   if (!P[key].length) delete P[key];
-  sv(); renderCal();
+  sv();
+  await savePlanningToSupabase();
+  renderCal();
 }
