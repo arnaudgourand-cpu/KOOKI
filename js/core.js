@@ -39,14 +39,13 @@ const SICO = {
 };
 
 /* ══ STATE ══ */
-let R   = JSON.parse(localStorage.getItem('kk-r')||'[]');
+let R   = [];
 let P   = JSON.parse(localStorage.getItem('kk-p')||'{}');
 let CK  = JSON.parse(localStorage.getItem('kk-c')||'{}');
 let CAT_OVERRIDE = JSON.parse(localStorage.getItem('kk-catov')||'{}');
 let pkey = null, urldat = null, editIdx = null, photoData = null;
 
 const sv = () => {
-  localStorage.setItem('kk-r', JSON.stringify(R));
   localStorage.setItem('kk-p', JSON.stringify(P));
   localStorage.setItem('kk-c', JSON.stringify(CK));
   localStorage.setItem('kk-catov', JSON.stringify(CAT_OVERRIDE));
