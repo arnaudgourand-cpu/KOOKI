@@ -4,8 +4,7 @@ function openGeminiImage() {
   const prompt = name
     ? `Crée une belle photo réaliste d'un plat de cuisine : ${name}. Style photo culinaire professionnelle, vue du dessus, sur une belle assiette.`
     : `Crée une belle photo réaliste d'un plat de cuisine. Style photo culinaire professionnelle.`;
-  const url = `https://gemini.google.com/app?hl=fr`;
-  window.open(url, '_blank');
+  window.open('https://gemini.google.com/app?hl=fr', '_blank');
   setTimeout(() => {
     navigator.clipboard.writeText(prompt).catch(() => {});
     toast('Prompt copié ! Collez-le dans Gemini');
@@ -34,6 +33,7 @@ function clearPhoto() {
 
 /* ══ AJOUT ══ */
 function openAdd() {
+  if (!currentUser) { openOv('ov-auth'); toast('Connecte-toi pour ajouter une recette'); return; }
   editIdx = null;
   ['rn','rt','rs','rp','ri','rurl'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('inglist').innerHTML = '';
@@ -86,7 +86,7 @@ function addIng(n='',q='',u='') {
   li.appendChild(d);
 }
 
-function saveRecipe() {
+async function saveRecipe() {
   const name = document.getElementById('rn').value.trim();
   if (!name) { alert('Donnez un nom !'); return; }
   const ings = [];
@@ -106,8 +106,19 @@ function saveRecipe() {
     url: editIdx !== null ? R[editIdx].url : undefined,
     fav: editIdx !== null ? R[editIdx].fav : false,
   };
+
   const isEdit = editIdx !== null;
-  if (isEdit) { R[editIdx] = recette; editIdx = null; } else R.push(recette);
+  if (isEdit) {
+    const supabaseId = R[editIdx]._id;
+    R[editIdx] = { ...recette, _id: supabaseId };
+    await updateRecipeInSupabase(supabaseId, recette);
+    editIdx = null;
+  } else {
+    const saved = await saveRecipeToSupabase(recette);
+    if (saved) R.unshift({ ...recette, _id: saved.id });
+    else R.unshift(recette);
+  }
+
   document.querySelector('#ov-add .shd h3').textContent = 'Nouvelle recette';
   document.querySelector('#ov-add #t-manual .btn-r').textContent = 'Enregistrer la recette';
   sv(); closeOv('ov-add'); renderRecipes();
@@ -138,8 +149,11 @@ async function importUrl() {
   document.getElementById('spin').classList.remove('on');
 }
 
-function confirmUrl() {
+async function confirmUrl() {
   if (!urldat) return;
-  R.push(urldat); sv(); closeOv('ov-add'); renderRecipes();
+  const saved = await saveRecipeToSupabase(urldat);
+  if (saved) R.unshift({ ...urldat, _id: saved.id });
+  else R.unshift(urldat);
+  sv(); closeOv('ov-add'); renderRecipes();
   toast('Recette importée !');
 }
