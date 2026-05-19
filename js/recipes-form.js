@@ -1,14 +1,35 @@
 /* ══ GÉNÉRATION IMAGE ══ */
-function openGeminiImage() {
+async function openGeminiImage() {
   const name = document.getElementById('rn').value.trim();
-  const prompt = name
-    ? `Crée une belle photo réaliste d'un plat de cuisine : ${name}. Style photo culinaire professionnelle, vue du dessus, sur une belle assiette.`
-    : `Crée une belle photo réaliste d'un plat de cuisine. Style photo culinaire professionnelle.`;
-  window.open('https://gemini.google.com/app?hl=fr', '_blank');
-  setTimeout(() => {
-    navigator.clipboard.writeText(prompt).catch(() => {});
-    toast('Prompt copié ! Collez-le dans Gemini');
-  }, 500);
+  if (!name) { toast('Donne un nom à la recette d\'abord !'); return; }
+
+  const btn = document.querySelector('button[onclick="openGeminiImage()"]');
+  if (btn) { btn.textContent = '⏳ Génération en cours…'; btn.disabled = true; }
+
+  try {
+    const prompt = `Professional food photography of "${name}". Top view, beautiful plating, natural lighting, appetizing, high quality culinary photo on a nice plate or bowl.`;
+    const res = await fetch('https://kooki-api.arnaud-gourand.workers.dev/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'image', prompt })
+    });
+    const data = await res.json();
+    if (data.image) {
+      photoData = data.image;
+      document.getElementById('photo-img').src = photoData;
+      document.getElementById('photo-preview').style.display = 'block';
+      document.getElementById('photo-label').style.display = 'none';
+      toast('✅ Image générée !');
+    } else {
+      toast('❌ Erreur génération image');
+      console.error(data);
+    }
+  } catch(e) {
+    toast('❌ Erreur : ' + e.message);
+    console.error(e);
+  }
+
+  if (btn) { btn.innerHTML = `<svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M12 8v8M8 12h8"/></svg> Générer une image avec IA`; btn.disabled = false; }
 }
 
 /* ══ PHOTO ══ */
@@ -162,11 +183,12 @@ async function importUrl() {
     const rawText = data.content?.[0]?.text || '';
     const clean = rawText.replace(/```json|```/g,'').trim();
     urldat = JSON.parse(clean);
-    urldat.url = url; urldat.photo = null;
+    urldat.url = url;
     document.getElementById('pname').textContent = urldat.name;
     document.getElementById('pinfo').textContent = [urldat.time&&`${urldat.time} min`, urldat.servings&&`${urldat.servings} pers.`].filter(Boolean).join(' · ');
     document.getElementById('pings').textContent = urldat.ingredients?.map(g=>`${g.qty||''} ${g.unit||''} ${g.name}`.trim()).join(', ')||'';
     document.getElementById('uprev').style.display = 'block';
+    if (urldat.photo) toast('✅ Photo extraite !');
   } catch(e) { alert('Extraction impossible. Essayez en manuel.'); console.error(e); }
   document.getElementById('spin').classList.remove('on');
 }
