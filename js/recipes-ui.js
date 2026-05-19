@@ -1,6 +1,7 @@
 /* ══ FILTRES ══ */
 let activeFilter = 'all';
 let activeRegime = 'all';
+let activeSubcat = 'all';
 let showFavOnly  = false;
 
 function toggleFilters(btn) {
@@ -18,6 +19,13 @@ function setFilter(cat, btn) {
 function setRegime(regime, btn) {
   activeRegime = regime;
   document.querySelectorAll('#regime-filters .cat-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRecipes();
+}
+
+function setSubcat(subcat, btn) {
+  activeSubcat = subcat;
+  document.querySelectorAll('#subcat-filters .cat-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   renderRecipes();
 }
@@ -41,10 +49,11 @@ function renderRecipes() {
     (!q || r.name.toLowerCase().includes(q)) &&
     (activeFilter === 'all' || r.category === activeFilter) &&
     (activeRegime === 'all' || r.regime === activeRegime) &&
+    (activeSubcat === 'all' || r.subcat === activeSubcat) &&
     (!showFavOnly || r.fav)
   );
   const n = R.length;
-  document.getElementById('rcount').textContent = q || activeFilter !== 'all' || activeRegime !== 'all' || showFavOnly
+  document.getElementById('rcount').textContent = q || activeFilter !== 'all' || activeRegime !== 'all' || activeSubcat !== 'all' || showFavOnly
     ? `${filtered.length} résultat${filtered.length>1?'s':''}`
     : `${n} recette${n>1?'s':''}`;
 
@@ -55,6 +64,7 @@ function renderRecipes() {
 
   filtered.forEach(r => {
     const idx = R.indexOf(r);
+    const subcatLabel = r.subcat ? SUBCATS[r.subcat] : null;
     h += `<div class="rcard" onclick="openFiche(${idx})">
       ${r.photo ? `<img class="rcard-photo" src="${r.photo}" alt="${r.name}">` : `<div class="rcard-emoji"></div>`}
       <div class="rcard-grad"></div>
@@ -65,7 +75,7 @@ function renderRecipes() {
       </button>
       <div class="rcard-body">
         <div class="rcard-name">${r.name}</div>
-        <div class="rcard-meta">${[r.time&&`⏱ ${r.time} min`, r.servings&&`${r.servings} pers.`, r.price&&`~${r.price}€`].filter(Boolean).join(' · ')}</div>
+        <div class="rcard-meta">${[r.time&&`⏱ ${r.time} min`, r.servings&&`${r.servings} pers.`, subcatLabel&&`· ${subcatLabel}`].filter(Boolean).join(' ')}</div>
         <div class="rcard-row">
           <button class="rbtn rbtn-r" onclick="event.stopPropagation();goplan()">+ Planning</button>
           <button class="rbtn rbtn-g" onclick="event.stopPropagation();delR(${idx})"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>
@@ -110,6 +120,7 @@ function renderFiche() {
   const base = parseInt(r.servings) || 4;
   const ratio = ficheServings / base;
   const steps = r.instructions ? r.instructions.split('\n').filter(s => s.trim()) : [];
+  const subcatLabel = r.subcat ? SUBCATS[r.subcat] : null;
 
   function scaleQty(qty) {
     if (!qty) return '';
@@ -134,6 +145,7 @@ function renderFiche() {
       <div class="fiche-title">${r.name}</div>
       <div class="fiche-badges">
         <span class="fiche-badge">${CATS[r.category]||'Plat'}</span>
+        ${subcatLabel ? `<span class="fiche-badge fiche-badge-n">${subcatLabel}</span>` : ''}
         ${r.regime==='vege'?`<span class="fiche-badge fiche-badge-g">Végétarien</span>`:''}
         ${r.time?`<span class="fiche-badge fiche-badge-n">⏱ ${r.time} min</span>`:''}
         ${r.price?`<span class="fiche-badge fiche-badge-n">~${r.price} €</span>`:''}
