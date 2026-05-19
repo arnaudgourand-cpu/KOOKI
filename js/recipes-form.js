@@ -40,6 +40,7 @@ function openAdd() {
   document.getElementById('spin').classList.remove('on');
   document.getElementById('uprev').style.display = 'none';
   document.getElementById('rg').value = 'normal';
+  document.getElementById('rsc').value = '';
   document.querySelector('#ov-add .shd h3').textContent = 'Nouvelle recette';
   document.querySelector('#ov-add #t-manual .btn-r').textContent = 'Enregistrer la recette';
   clearPhoto(); urldat = null; addIng(); swTab('manual'); openOv('ov-add');
@@ -54,6 +55,7 @@ function openEdit(i) {
   document.getElementById('rs').value = r.servings || '';
   document.getElementById('rp').value = r.price || '';
   document.getElementById('rc').value = r.category || 'plat';
+  document.getElementById('rsc').value = r.subcat || '';
   document.getElementById('rg').value = r.regime || 'normal';
   document.getElementById('ri').value = r.instructions || '';
   photoData = r.photo || null;
@@ -100,6 +102,7 @@ async function saveRecipe() {
     servings: document.getElementById('rs').value,
     price: document.getElementById('rp').value,
     category: document.getElementById('rc').value,
+    subcat: document.getElementById('rsc').value || null,
     regime: document.getElementById('rg').value || 'normal',
     ingredients: ings,
     instructions: document.getElementById('ri').value,
