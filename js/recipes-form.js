@@ -31,6 +31,24 @@ function clearPhoto() {
   const pl = document.getElementById('photo-label'); if (pl) pl.style.display = 'flex';
 }
 
+/* ══ SOUS-CATÉGORIES (multi-select) ══ */
+function toggleSubcat(val) {
+  const btn = document.querySelector(`#subcat-checkboxes button[data-val="${val}"]`);
+  if (!btn) return;
+  btn.classList.toggle('on');
+}
+
+function getSelectedSubcats() {
+  return [...document.querySelectorAll('#subcat-checkboxes button.on')].map(b => b.dataset.val);
+}
+
+function renderSubcatButtons(selected = []) {
+  const entries = Object.entries(SUBCATS);
+  document.getElementById('subcat-checkboxes').innerHTML = entries.map(([val, label]) =>
+    `<button type="button" class="cat-btn${selected.includes(val) ? ' on' : ''}" data-val="${val}" onclick="toggleSubcat('${val}')">${label}</button>`
+  ).join('');
+}
+
 /* ══ AJOUT ══ */
 function openAdd() {
   if (!currentUser) { openOv('ov-auth'); toast('Connecte-toi pour ajouter une recette'); return; }
@@ -40,7 +58,8 @@ function openAdd() {
   document.getElementById('spin').classList.remove('on');
   document.getElementById('uprev').style.display = 'none';
   document.getElementById('rg').value = 'normal';
-  document.getElementById('rsc').value = '';
+  document.getElementById('rc').value = 'plat';
+  renderSubcatButtons([]);
   document.querySelector('#ov-add .shd h3').textContent = 'Nouvelle recette';
   document.querySelector('#ov-add #t-manual .btn-r').textContent = 'Enregistrer la recette';
   clearPhoto(); urldat = null; addIng(); swTab('manual'); openOv('ov-add');
@@ -55,9 +74,9 @@ function openEdit(i) {
   document.getElementById('rs').value = r.servings || '';
   document.getElementById('rp').value = r.price || '';
   document.getElementById('rc').value = r.category || 'plat';
-  document.getElementById('rsc').value = r.subcat || '';
   document.getElementById('rg').value = r.regime || 'normal';
   document.getElementById('ri').value = r.instructions || '';
+  renderSubcatButtons(r.subcats || []);
   photoData = r.photo || null;
   if (photoData) {
     document.getElementById('photo-img').src = photoData;
@@ -102,7 +121,7 @@ async function saveRecipe() {
     servings: document.getElementById('rs').value,
     price: document.getElementById('rp').value,
     category: document.getElementById('rc').value,
-    subcat: document.getElementById('rsc').value || null,
+    subcats: getSelectedSubcats(),
     regime: document.getElementById('rg').value || 'normal',
     ingredients: ings,
     instructions: document.getElementById('ri').value,
